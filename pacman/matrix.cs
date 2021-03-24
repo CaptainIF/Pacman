@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace pacman {
@@ -7,16 +8,16 @@ namespace pacman {
         public float[,] data;
         public int columns, rows;
 
-        public matrix(int columns, int rows) {
+        public matrix(int rows, int columns) {
             this.columns = columns;
             this.rows = rows;
-            this.data = new float[columns, rows];
+            this.data = new float[rows, columns];
         }
 
         public void randomize(Random rand) {
 
-            for (int i = 0; i < this.columns; i++) {
-                for (int j = 0; j < this.rows; j++) {
+            for (int i = 0; i < this.rows; i++) {
+                for (int j = 0; j < this.columns; j++) {
                     this.data[i, j] = rand.Next(10);
                 }
             }
@@ -25,18 +26,18 @@ namespace pacman {
         public void print() {
             for (int i = 0; i < this.rows; i++) {
                 for (int j = 0; j < this.columns; j++) {
-                    Console.Write(this.data[j, i] + " ");
+                    Debug.Write(this.data[i, j] + " ");
                 }
-                Console.WriteLine("");
+                Debug.WriteLine("");
 
             }
-            Console.WriteLine("");
+            Debug.WriteLine("");
         }
 
         public void transpose() {
-            matrix result = new matrix(this.rows, this.columns);
-            for (int i = 0; i < this.columns; i++) {
-                for (int j = 0; j < this.rows; j++) {
+            matrix result = new matrix(this.columns, this.rows);
+            for (int i = 0; i < this.rows; i++) {
+                for (int j = 0; j < this.columns; j++) {
                     result.data[j, i] = this.data[i, j];
                 }
             }
@@ -44,9 +45,9 @@ namespace pacman {
         }
 
         public matrix add(float term) {
-            matrix result = new matrix(this.columns, this.rows);
-            for (int i = 0; i < result.columns; i++) {
-                for (int j = 0; j < result.rows; j++) {
+            matrix result = new matrix(this.rows, this.columns);
+            for (int i = 0; i < result.rows; i++) {
+                for (int j = 0; j < result.columns; j++) {
                     result.data[i, j] = this.data[i, j] + term;
                 }
             }
@@ -54,10 +55,10 @@ namespace pacman {
         }
 
         public matrix add(matrix m) {
-            if (m.data.GetLength(0) == this.columns && m.rows == this.rows) {
-                matrix result = new matrix(this.columns, this.rows);
-                for (int i = 0; i < m.columns; i++) {
-                    for (int j = 0; j < m.rows; j++) {
+            if (m.rows == this.rows && m.columns == this.columns) {
+                matrix result = new matrix(this.rows, this.columns);
+                for (int i = 0; i < m.rows; i++) {
+                    for (int j = 0; j < m.columns; j++) {
                         result.data[i, j] = this.data[i, j] + m.data[i, j];
                     }
                 }
@@ -69,9 +70,9 @@ namespace pacman {
         }
 
         public matrix sub(float term) {
-            matrix result = new matrix(this.columns, this.rows);
-            for (int i = 0; i < result.columns; i++) {
-                for (int j = 0; j < result.rows; j++) {
+            matrix result = new matrix(this.rows, this.columns);
+            for (int i = 0; i < result.rows; i++) {
+                for (int j = 0; j < result.columns; j++) {
                     result.data[i, j] = this.data[i, j] - term;
                 }
             }
@@ -79,9 +80,9 @@ namespace pacman {
         }
 
         public matrix mult(float term) {
-            matrix result = new matrix(this.columns, this.rows);
-            for (int i = 0; i < result.columns; i++) {
-                for (int j = 0; j < result.rows; j++) {
+            matrix result = new matrix(this.rows, this.columns);
+            for (int i = 0; i < result.rows; i++) {
+                for (int j = 0; j < result.columns; j++) {
                     result.data[i, j] = this.data[i, j] * term;
                 }
             }
@@ -89,36 +90,37 @@ namespace pacman {
         }
 
         public matrix mult(matrix m) {
-            if (m.data.GetLength(0) == this.columns && m.rows == this.rows) {
-                matrix result = new matrix(this.columns, this.rows);
-                for (int i = 0; i < m.columns; i++) {
-                    for (int j = 0; j < m.rows; j++) {
+            if (m.rows == this.rows && m.columns == this.columns) {
+                matrix result = new matrix(this.rows, this.columns);
+                for (int i = 0; i < m.rows; i++) {
+                    for (int j = 0; j < m.columns; j++) {
                         result.data[i, j] = this.data[i, j] * m.data[i, j];
                     }
                 }
                 return result;
-            } else if (this.rows == m.columns && this.columns == m.rows) {
+            } else if (this.columns == m.rows) {
                 matrix result = new matrix(this.rows, m.columns);
+                result.print();
                 for (int i = 0; i < this.rows; i++) {
                     for (int j = 0; j < m.columns; j++) {
                         float temp = 0;
                         for (int k = 0; k < this.columns; k++) {
-                            temp += this.data[k, j] * m.data[i, k];
+                            temp += this.data[i, k] * m.data[k, j];
                         }
                         result.data[i, j] = temp;
                     }
                 }
                 return result;
             } else {
-                Console.WriteLine("WRONG DIMENSIONS!");
+                Debug.WriteLine("WRONG DIMENSIONS!");
                 return this;
             }
         }
 
         public matrix div(float term) {
-            matrix result = new matrix(this.columns, this.rows);
-            for (int i = 0; i < result.columns; i++) {
-                for (int j = 0; j < result.rows; j++) {
+            matrix result = new matrix(this.rows, this.columns);
+            for (int i = 0; i < result.rows; i++) {
+                for (int j = 0; j < result.columns; j++) {
                     result.data[i, j] = this.data[i, j] / term;
                 }
             }
