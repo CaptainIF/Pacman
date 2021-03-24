@@ -18,11 +18,11 @@ namespace pacman {
 
         protected override void Initialize() {
             // TODO: Add your initialization logic here
-            /*
+            
             _graphics.PreferredBackBufferWidth = width;
             _graphics.PreferredBackBufferHeight = height;
             _graphics.ApplyChanges();
-            */
+            
             base.Initialize();
             
         }
@@ -38,7 +38,7 @@ namespace pacman {
                 Exit();
 
             // TODO: Add your update logic here
-
+            
             base.Update(gameTime);
         }
 
