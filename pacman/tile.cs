@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 using System.IO;
 
 namespace pacman {
     class tile : DrawableGameComponent {
         int size = 28;
+        int wallID = 0;
         public Vector2 position;
         public int tileID;
         Texture2D tileTexture;
@@ -19,6 +21,29 @@ namespace pacman {
             Color[] data = new Color[source.Width * source.Height];
             allTiles.GetData(0, source, data, 0, data.Length);
             tileTexture.SetData(data);
+        }
+
+        public void CalculateWalls(gameMap map) {
+            if(tileID == 1) {
+                Debug.WriteLine(this.position.X.ToString() + ", " + this.position.Y.ToString());
+            }
+        }
+
+        public tile[] CheckNeighbours(gameMap map) {
+            tile[,] grid = map.tiles;
+            int i = (int)this.position.X;
+            int j = (int)this.position.Y;
+            tile[] result;
+            if(grid[i, j].tileID == 1) {
+                result[result.Length] = grid[i, j];
+            }
+
+
+            return result;
+        }
+
+        public void LoadTexture() {
+
         }
 
         public void Draw(SpriteBatch sb) {
@@ -47,6 +72,14 @@ namespace pacman {
                     }
                     testSR.Read();
                     testSR.Read();//fixar radbrytningar
+                }
+            }
+        }
+
+        public void InitializeWalls() {
+            for(int i = 0;i<tiles.GetLength(0);i++) {
+                for(int j = 0;j<tiles.GetLength(1);j++) {
+                    tiles[i, j].CalculateWalls(this);
                 }
             }
         }

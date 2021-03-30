@@ -30,6 +30,7 @@ namespace pacman {
         protected override void LoadContent() {
             
             map = new gameMap(this, 28, 36);
+            map.InitializeWalls();
             // TODO: use this.Content to load your game content here
         }
 

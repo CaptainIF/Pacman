@@ -98,7 +98,14 @@ namespace pacman {
                     }
                 }
                 return result;
-            } else if (this.columns == m.rows) {
+            } else {
+                Debug.WriteLine("WRONG DIMENSIONS!");
+                return null;
+            }
+        }
+
+        public matrix dot_mult(matrix m) {
+            if (this.columns == m.rows) {
                 matrix result = new matrix(this.rows, m.columns);
                 result.print();
                 for (int i = 0; i < this.rows; i++) {
@@ -113,7 +120,7 @@ namespace pacman {
                 return result;
             } else {
                 Debug.WriteLine("WRONG DIMENSIONS!");
-                return this;
+                return null;
             }
         }
 
