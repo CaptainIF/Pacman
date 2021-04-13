@@ -8,6 +8,7 @@ namespace pacman {
         gameMap map;
         const int width = 784;
         const int height = 1008;
+        pacman torsten;
 
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
@@ -22,7 +23,9 @@ namespace pacman {
             _graphics.PreferredBackBufferWidth = width;
             _graphics.PreferredBackBufferHeight = height;
             _graphics.ApplyChanges();
-            
+
+            torsten = new pacman(this, 400, 400, 2);
+
             base.Initialize();
             
         }
@@ -39,15 +42,18 @@ namespace pacman {
                 Exit();
 
             // TODO: Add your update logic here
-            
+            torsten.Update();
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            map.Draw(gameTime);
             // TODO: Add your drawing code here
+            map.Draw(gameTime);
+            torsten.Draw(gameTime);
+            
 
             base.Draw(gameTime);
         }

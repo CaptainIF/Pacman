@@ -33,6 +33,7 @@ namespace pacman {
                     List<tile> neighbours = CheckNeighbours(map);
                     if(neighbours.Count == 3) {
                         Debug.WriteLine(neighbours[0].position.X);
+                        
                     }
                     if(neighbours.Count == 2) {
 
