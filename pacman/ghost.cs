@@ -4,5 +4,10 @@ using System.Text;
 
 namespace pacman {
     class ghost {
+
+        public ghost() {
+            
+        }
+
     }
 }
