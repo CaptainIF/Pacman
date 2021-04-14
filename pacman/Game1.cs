@@ -24,7 +24,7 @@ namespace pacman {
             _graphics.PreferredBackBufferHeight = height;
             _graphics.ApplyChanges();
 
-            torsten = new pacman(this, 400, 400, 2);
+            torsten = new pacman(this, 13, 26, 2);
 
             base.Initialize();
             
@@ -42,7 +42,7 @@ namespace pacman {
                 Exit();
 
             // TODO: Add your update logic here
-            torsten.Update();
+            torsten.Update(map);
 
             base.Update(gameTime);
         }
