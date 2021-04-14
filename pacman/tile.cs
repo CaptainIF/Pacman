@@ -7,7 +7,7 @@ using System.IO;
 
 namespace pacman {
     class tile : DrawableGameComponent {
-        int size = 28;
+        public int size = 28;
         int wallID = 0;
         public Vector2 position;
         public int tileID;
