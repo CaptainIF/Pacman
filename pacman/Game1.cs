@@ -24,7 +24,7 @@ namespace pacman {
             _graphics.PreferredBackBufferHeight = height;
             _graphics.ApplyChanges();
 
-            torsten = new pacman(this, 13, 26, 2);
+            torsten = new pacman(this, 13, 26, 8);
 
             base.Initialize();
             
