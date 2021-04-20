@@ -12,19 +12,28 @@ namespace pacman {
         public Vector2 position;
         public int tileID;
         Texture2D tileTexture;
+        public int i, j;
         
-        public tile(Game game): base(game) {
-            
+        public tile(Game game, int i, int j): base(game) {
+            this.i = i;
+            this.j = j;
         }
         public void Initialize(Vector2 position, int tileID) {
             this.position = position;
             this.tileID = tileID;
-            Texture2D allTiles = Game.Content.Load<Texture2D>("tilemap");
-            Rectangle source = new Rectangle(size * tileID, size*1, size, size);
-            tileTexture = new Texture2D(GraphicsDevice, source.Width, source.Height);
-            Color[] data = new Color[source.Width * source.Height];
-            allTiles.GetData(0, source, data, 0, data.Length);
-            tileTexture.SetData(data);
+            if(this.tileID == 1) {
+                Texture2D texture = new Texture2D(GraphicsDevice, 1, 1);
+                texture.SetData(new Color[] { Color.Black });
+                this.tileTexture = texture;
+            } else {
+                Texture2D allTiles = Game.Content.Load<Texture2D>("spriteMap_pacman");
+                Rectangle source = new Rectangle(size * wallID, 0, size, size);
+                tileTexture = new Texture2D(GraphicsDevice, source.Width, source.Height);
+                Color[] data = new Color[source.Width * source.Height];
+                allTiles.GetData(0, source, data, 0, data.Length);
+                tileTexture.SetData(data);
+            }
+            
         }
 
         public void CalculateWalls(gameMap map) {
@@ -32,8 +41,10 @@ namespace pacman {
                 if(CheckWallNeighbours(map)) {
                     List<tile> neighbours = CheckNeighbours(map);
                     if(neighbours.Count == 3) {
-                        
-                        
+                        if(this.j - neighbours[0].j == 1) {
+                            this.wallID = 1;
+                            
+                        }
                     }
                     if(neighbours.Count == 2) {
 
@@ -109,7 +120,7 @@ namespace pacman {
                 for (int j = 0; j < tiles.GetLength(1); j++) {
                     for (int i = 0; i < tiles.GetLength(0); i++) {
                         int symbol = testSR.Read() - 0x30;
-                        tile t = new tile(game);
+                        tile t = new tile(game, i, j);
                         t.Initialize(new Vector2(i, j), symbol);
                         tiles[i, j] = t;  
                     }
