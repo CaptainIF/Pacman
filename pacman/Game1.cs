@@ -9,6 +9,7 @@ namespace pacman {
         const int width = 784;
         const int height = 1008;
         pacman torsten;
+        ghost spöke;
 
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
@@ -24,7 +25,9 @@ namespace pacman {
             _graphics.PreferredBackBufferHeight = height;
             _graphics.ApplyChanges();
 
-            torsten = new pacman(this, 13, 26, 2);
+            torsten = new pacman(this, 13, 26, 8);
+            spöke = new ghost(this, 13, 14, 8);
+
 
             base.Initialize();
             
@@ -43,6 +46,7 @@ namespace pacman {
             
 
             // TODO: Add your update logic here
+            spöke.Update(map);
             torsten.Update(map);
 
             base.Update(gameTime);
@@ -53,8 +57,8 @@ namespace pacman {
 
             // TODO: Add your drawing code here
             map.Draw(gameTime);
+            spöke.Draw(gameTime);
             torsten.Draw(gameTime);
-            
 
             base.Draw(gameTime);
         }
