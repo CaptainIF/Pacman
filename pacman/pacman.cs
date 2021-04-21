@@ -55,8 +55,13 @@ namespace pacman {
             }
 
             if (map.tiles[(int)((this.pos.X /*+ this.dir.X * 28*/ + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1) {
-                this.pos.X += this.dir.X;
-                this.pos.Y += this.dir.Y;
+                this.pos.X += this.dir.X * this.speed;
+                this.pos.Y += this.dir.Y * this.speed;
+            } else {
+                this.dir.X = 0;
+                this.dir.Y = 0;
+                this.pos.X = this.currentI * 28 + 14;
+                this.pos.Y = this.currentJ * 28 + 14;
             }
             
         }

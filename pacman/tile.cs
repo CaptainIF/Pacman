@@ -12,22 +12,25 @@ namespace pacman {
         public Vector2 position;
         public int tileID;
         Texture2D tileTexture;
-        public int i, j;
         
-        public tile(Game game, int i, int j): base(game) {
-            this.i = i;
-            this.j = j;
-        }
-        public void Initialize(Vector2 position, int tileID) {
-            this.position = position;
+        public tile(Game game, int i, int j, int tileID): base(game) {
+            this.position.X = i;
+            this.position.Y = j;
             this.tileID = tileID;
+        }
+        public void Init() {
+            //this.position = position;
             if(this.tileID == 1) {
+                Texture2D texture = new Texture2D(GraphicsDevice, 1, 1);
+                texture.SetData(new Color[] { Color.Black });
+                this.tileTexture = texture;
+            } else if(this.wallID == 6) {
                 Texture2D texture = new Texture2D(GraphicsDevice, 1, 1);
                 texture.SetData(new Color[] { Color.Black });
                 this.tileTexture = texture;
             } else {
                 Texture2D allTiles = Game.Content.Load<Texture2D>("spriteMap_pacman");
-                Rectangle source = new Rectangle(size * wallID, 0, size, size);
+                Rectangle source = new Rectangle(size * this.wallID, 0, size, size);
                 tileTexture = new Texture2D(GraphicsDevice, source.Width, source.Height);
                 Color[] data = new Color[source.Width * source.Height];
                 allTiles.GetData(0, source, data, 0, data.Length);
@@ -38,20 +41,37 @@ namespace pacman {
 
         public void CalculateWalls(gameMap map) {
             if(tileID == 0) {
-                if(CheckWallNeighbours(map)) {
+                if(CheckWallNeighbours(map)) { 
                     List<tile> neighbours = CheckNeighbours(map);
-                    if(neighbours.Count == 3) {
-                        if(this.j - neighbours[0].j == 1) {
+                    if (neighbours.Count == 3) {
+                        if (this.position.Y - neighbours[0].position.Y == 1 && this.position.X - neighbours[1].position.X == -1 && this.position.X - neighbours[2].position.X == 1) {
+                            this.wallID = 0;
+                        } else if(this.position.Y - neighbours[0].position.Y == 1 && this.position.X - neighbours[1].position.X == -1 && this.position.Y - neighbours[2].position.Y == -1) {
                             this.wallID = 1;
-                            
+                        } else if(this.position.X - neighbours[0].position.X == -1 && this.position.Y - neighbours[1].position.Y == -1 && this.position.X - neighbours[2].position.X == 1) {
+                            this.wallID = 0;
+                        } else if(this.position.Y - neighbours[0].position.Y == 1 && this.position.Y - neighbours[1].position.Y == -1 && this.position.X - neighbours[2].position.X == 1) {
+                            this.wallID = 1;
                         }
-                    }
-                    if(neighbours.Count == 2) {
-
+                    } else if (neighbours.Count == 2) {
+                        if(this.position.Y - neighbours[0].position.Y == 1 && this.position.X - neighbours[1].position.X == -1) {
+                            this.wallID = 4;
+                        } else if(this.position.X - neighbours[0].position.X == -1 && this.position.Y - neighbours[1].position.Y == -1) {
+                            this.wallID = 5;
+                        } else if(this.position.Y - neighbours[0].position.Y == -1 && this.position.X - neighbours[1].position.X == 1) {
+                            this.wallID = 2;
+                        } else if(this.position.Y - neighbours[0].position.Y == 1 && this.position.X - neighbours[1].position.X == 1) {
+                            this.wallID = 3;
+                        } else if(this.position.Y - neighbours[0].position.Y == 1 && this.position.Y - neighbours[1].position.Y == -1) {
+                            this.wallID = 1;
+                        }
+                    } else {
+                        this.wallID = 0;
                     }
                 } else {
-                    this.wallID = 0;
+                    this.wallID = 6;
                 }
+                    
             }
         }
 
@@ -60,16 +80,16 @@ namespace pacman {
             int i = (int)this.position.X;
             int j = (int)this.position.Y;
             List<tile> neighbours = new List<tile>();
-            if((j - 1) >= 0 && grid[i, j - 1].tileID == 0) {
+            if((j - 1) >= 0 && grid[i, j - 1].tileID == 0 && grid[i, j - 1].CheckWallNeighbours(map)) {
                 neighbours.Add(grid[i, j - 1]);
             }
-            if((i + 1) < map.width && grid[i + 1, j].tileID == 0) {
+            if((i + 1) < map.width && grid[i + 1, j].tileID == 0 && grid[i + 1, j].CheckWallNeighbours(map)) {
                 neighbours.Add(grid[i + 1, j]);
             }
-            if((j + 1) < map.height && grid[i, j + 1].tileID == 0) {
+            if((j + 1) < map.height && grid[i, j + 1].tileID == 0 && grid[i, j + 1].CheckWallNeighbours(map)) {
                 neighbours.Add(grid[i, j + 1]);
             }
-            if((i - 1) >= 0 && grid[i - 1, j].tileID == 0) {
+            if((i - 1) >= 0 && grid[i - 1, j].tileID == 0 && grid[i - 1, j].CheckWallNeighbours(map)) {
                 neighbours.Add(grid[i - 1, j]);
             }
 
@@ -83,14 +103,19 @@ namespace pacman {
             int j = (int)this.position.Y;
             if ((j - 1) >= 0 && grid[i, j - 1].tileID == 1) {
                 return true;
-            }
-            if ((i + 1) < map.width && grid[i + 1, j].tileID == 1) {
+            } else if ((j - 1) >= 0 && (i + 1) < map.width && grid[i + 1, j - 1].tileID == 1) {
                 return true;
-            }
-            if ((j + 1) < map.height && grid[i, j + 1].tileID == 1) {
+            } else if ((i + 1) < map.width && grid[i + 1, j].tileID == 1) {
                 return true;
-            }
-            if ((i - 1) >= 0 && grid[i - 1, j].tileID == 1) {
+            } else if ((i + 1) < map.width && (j + 1) < map.height && grid[i + 1, j + 1].tileID == 1) {
+                return true;
+            } else if ((j + 1) < map.height && grid[i, j + 1].tileID == 1) {
+                return true;
+            } else if ((i - 1) >= 0 && (j + 1) < map.height && grid[i - 1, j + 1].tileID == 1) {
+                return true;
+            } else if ((i - 1) >= 0 && grid[i - 1, j].tileID == 1) {
+                return true;
+            } else if((i - 1) >= 0 && (j - 1) >= 0 && grid[i - 1, j - 1].tileID == 1) {
                 return true;
             }
             return false;
@@ -120,8 +145,7 @@ namespace pacman {
                 for (int j = 0; j < tiles.GetLength(1); j++) {
                     for (int i = 0; i < tiles.GetLength(0); i++) {
                         int symbol = testSR.Read() - 0x30;
-                        tile t = new tile(game, i, j);
-                        t.Initialize(new Vector2(i, j), symbol);
+                        tile t = new tile(game, i, j, symbol);
                         tiles[i, j] = t;  
                     }
                     testSR.Read();
@@ -134,6 +158,7 @@ namespace pacman {
             for(int i = 0;i<tiles.GetLength(0);i++) {
                 for(int j = 0;j<tiles.GetLength(1);j++) {
                     tiles[i, j].CalculateWalls(this);
+                    tiles[i, j].Init();
                 }
             }
             //Debug.WriteLine(tiles[2, 6].CheckNeighbours(this).Count);
