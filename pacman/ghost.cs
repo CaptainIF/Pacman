@@ -13,8 +13,10 @@ namespace pacman {
         public Vector2 pos;
         public int width = 50;
         public int currentI, currentJ;
-        public gameMap map;
-        public ghost(Game game, int i, int j,int speed, pacman torsten, gameMap map):base(game) {
+       
+
+
+        public ghost(Game game, int i, int j,int speed):base(game) {
 
             //tile1 Y - pacman Y = katet1[1]
             //tile2 Y - pacman Y = katet2[1]
@@ -30,19 +32,68 @@ namespace pacman {
             this.pos.Y = j * 28 + 14;
             this.dir.X = 0;
             this.dir.Y = 0;
+
         }
 
-        public void update() {
-
+        public void Update(gameMap map) {
             this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
             this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
+            var kstate = Keyboard.GetState();
+            bool neighbour = map.tiles[currentI, currentJ].CheckWallNeighbours(map);
 
-            map.tiles[currentI, currentJ].CheckNeighbours(map);
+            /*if(keylol.IsKeyDown(Keys.Up)) {
+                this.dir.X = 0;
+                this.dir.Y = -1;
+            }*/
+
+            //Debug.WriteLine(torsten.currentI);
 
             
 
-            
+            if (kstate.IsKeyDown(Keys.W)) {
+                if (map.tiles[this.currentI, this.currentJ - 1].tileID == 1 && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
+                    this.dir.X = 0;
+                    this.dir.Y = -1;
+                }
+            }
+            if (kstate.IsKeyDown(Keys.S)) {
+                if (map.tiles[this.currentI, this.currentJ + 1].tileID == 1 && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
+                    this.dir.X = 0;
+                    this.dir.Y = 1;
+                }
+            }
+            if (kstate.IsKeyDown(Keys.A)) {
+                if (map.tiles[this.currentI - 1, this.currentJ].tileID == 1 && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
+                    this.dir.X = -1;
+                    this.dir.Y = 0;
+                }
+            }
+            if (kstate.IsKeyDown(Keys.D)) {
+                if (map.tiles[this.currentI + 1, this.currentJ].tileID == 1 && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
+                    this.dir.X = 1;
+                    this.dir.Y = 0;
+                }
+            }
+
+            if (map.tiles[(int)((this.pos.X /*+ this.dir.X * 28*/ + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1) {
+                this.pos.X += this.dir.X;
+                this.pos.Y += this.dir.Y;
+            }
+
 
         }
+
+        public void Draw(GameTime gt) {
+            SpriteBatch sb = new SpriteBatch(GraphicsDevice);
+            Texture2D texture;
+            texture = new Texture2D(GraphicsDevice, 1, 1);
+            texture.SetData(new Color[] { Color.CornflowerBlue });
+
+
+            sb.Begin();
+            sb.Draw(texture, new Rectangle((int)this.pos.X - this.width / 2, (int)this.pos.Y - this.width / 2, this.width, this.width), Color.White);
+            sb.End();
+        }
+
     }
 }
