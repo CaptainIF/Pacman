@@ -27,6 +27,11 @@ namespace pacman {
             this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
             this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
 
+            if(map.tiles[currentI, currentJ].tileID == 2) {
+                map.tiles[currentI, currentJ].tileID = 1;
+                map.tiles[currentI, currentJ].Init();
+            }
+
             var kstate = Keyboard.GetState();
 
             if (kstate.IsKeyDown(Keys.Up) || kstate.IsKeyDown(Keys.W)) {
@@ -42,7 +47,7 @@ namespace pacman {
                 }
             }
             if (kstate.IsKeyDown(Keys.Left) || kstate.IsKeyDown(Keys.A)) {
-                if ((map.tiles[this.currentI - 1, this.currentJ].tileID == 1 || map.tiles[this.currentI, this.currentJ + 1].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
+                if ((map.tiles[this.currentI - 1, this.currentJ].tileID == 1 || map.tiles[this.currentI - 1, this.currentJ].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
                     this.dir.X = -1;
                     this.dir.Y = 0;
                 }
@@ -54,7 +59,7 @@ namespace pacman {
                 }
             }
 
-            if (map.tiles[(int)((this.pos.X /*+ this.dir.X * 28*/ + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1 || map.tiles[(int)((this.pos.X /*+ this.dir.X * 28*/ + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1) {
+            if (map.tiles[(int)((this.pos.X /*+ this.dir.X * 28*/ + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1 || map.tiles[(int)((this.pos.X /*+ this.dir.X * 28*/ + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
                 this.pos.X += this.dir.X * this.speed;
                 this.pos.Y += this.dir.Y * this.speed;
             } else {

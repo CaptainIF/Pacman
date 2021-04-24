@@ -26,7 +26,6 @@ namespace pacman {
                 texture.SetData(new Color[] { Color.Black });
                 this.tileTexture = texture;
             } else if (this.tileID == 2) {
-                Debug.WriteLine("test");
                 Texture2D allTiles = Game.Content.Load<Texture2D>("spriteMap_pacman");
                 Rectangle source = new Rectangle(size * 6, 0, size, size);
                 tileTexture = new Texture2D(GraphicsDevice, source.Width, source.Height);
@@ -169,7 +168,6 @@ namespace pacman {
                 for (int j = 0; j < tiles.GetLength(1); j++) {
                     for (int i = 0; i < tiles.GetLength(0); i++) {
                         int symbol = testSR.Read() - 0x30;
-                        Debug.WriteLine(symbol);
                         tile t = new tile(game, i, j, symbol);
                         tiles[i, j] = t;
                     }
