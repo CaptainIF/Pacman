@@ -125,21 +125,21 @@ namespace pacman {
             tile[,] grid = map.tiles;
             int i = (int)this.position.X;
             int j = (int)this.position.Y;
-            if ((j - 1) >= 0 && grid[i, j - 1].tileID == 1) {
+            if ((j - 1) >= 0 && (grid[i, j - 1].tileID == 1 || grid[i, j - 1].tileID == 2)) {
                 return true;
-            } else if ((j - 1) >= 0 && (i + 1) < map.width && grid[i + 1, j - 1].tileID == 1) {
+            } else if ((j - 1) >= 0 && (i + 1) < map.width && (grid[i + 1, j - 1].tileID == 1 || grid[i + 1, j - 1].tileID == 2)) {
                 return true;
-            } else if ((i + 1) < map.width && grid[i + 1, j].tileID == 1) {
+            } else if ((i + 1) < map.width && (grid[i + 1, j].tileID == 1 || grid[i + 1, j].tileID == 2)) {
                 return true;
-            } else if ((i + 1) < map.width && (j + 1) < map.height && grid[i + 1, j + 1].tileID == 1) {
+            } else if ((i + 1) < map.width && (j + 1) < map.height && (grid[i + 1, j + 1].tileID == 1 || grid[i + 1, j + 1].tileID == 2)) {
                 return true;
-            } else if ((j + 1) < map.height && grid[i, j + 1].tileID == 1) {
+            } else if ((j + 1) < map.height && (grid[i, j + 1].tileID == 1 || grid[i, j + 1].tileID == 2)) {
                 return true;
-            } else if ((i - 1) >= 0 && (j + 1) < map.height && grid[i - 1, j + 1].tileID == 1) {
+            } else if ((i - 1) >= 0 && (j + 1) < map.height && (grid[i - 1, j + 1].tileID == 1 || grid[i - 1, j + 1].tileID == 2)) {
                 return true;
-            } else if ((i - 1) >= 0 && grid[i - 1, j].tileID == 1) {
+            } else if ((i - 1) >= 0 && (grid[i - 1, j].tileID == 1 || grid[i - 1, j].tileID == 1)) {
                 return true;
-            } else if ((i - 1) >= 0 && (j - 1) >= 0 && grid[i - 1, j - 1].tileID == 1) {
+            } else if ((i - 1) >= 0 && (j - 1) >= 0 && (grid[i - 1, j - 1].tileID == 1 || grid[i - 1, j - 1].tileID == 2)) {
                 return true;
             }
             return false;
