@@ -13,6 +13,7 @@ namespace pacman {
         public Vector2 pos;
         public int width = 50;
         public int currentI, currentJ;
+        public Texture2D texture;
        
 
 
@@ -125,13 +126,12 @@ namespace pacman {
 
         public void Draw(GameTime gt) {
             SpriteBatch sb = new SpriteBatch(GraphicsDevice);
-            Texture2D texture;
-            texture = new Texture2D(GraphicsDevice, 1, 1);
-            texture.SetData(new Color[] { Color.CornflowerBlue });
+            this.texture = Game.Content.Load<Texture2D>("spöke_1");
+            
 
 
             sb.Begin();
-            sb.Draw(texture, new Rectangle((int)this.pos.X - this.width / 2, (int)this.pos.Y - this.width / 2, this.width, this.width), Color.White);
+            sb.Draw(this.texture, new Rectangle((int)this.pos.X - this.width / 2, (int)this.pos.Y - this.width / 2, this.width, this.width), Color.White);
             sb.End();
         }
 

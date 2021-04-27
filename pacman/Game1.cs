@@ -42,7 +42,7 @@ namespace pacman {
         protected override void LoadContent() {
 
             torsten = new pacman(this, 13, 26, 2);
-            spöke = new ghost(this, 13, 14, 8);
+            spöke = new ghost(this, 13, 14, 2);
 
             map = new gameMap(this, 28, 36);
             map.InitializeWalls();
