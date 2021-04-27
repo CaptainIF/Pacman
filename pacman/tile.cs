@@ -13,11 +13,13 @@ namespace pacman {
         public int tileID;
         Texture2D tileTexture;
         public bool innerCorner = false;
+        public Game game;
 
         public tile(Game game, int i, int j, int tileID) : base(game) {
             this.position.X = i;
             this.position.Y = j;
             this.tileID = tileID;
+            this.game = game;
         }
         public void Init() {
             //this.position = position;
@@ -26,6 +28,7 @@ namespace pacman {
                 texture.SetData(new Color[] { Color.Black });
                 this.tileTexture = texture;
             } else if (this.tileID == 2) {
+                Game1.maxScoreCount++;
                 Texture2D allTiles = Game.Content.Load<Texture2D>("spriteMap_pacman");
                 Rectangle source = new Rectangle(size * 6, 0, size, size);
                 tileTexture = new Texture2D(GraphicsDevice, source.Width, source.Height);

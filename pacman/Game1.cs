@@ -6,12 +6,19 @@ using Microsoft.Xna.Framework.Media;
 namespace pacman {
     public class Game1 : Game {
         private GraphicsDeviceManager _graphics;
+        SpriteBatch sb;
         gameMap map;
         const int width = 784;
         const int height = 1008;
         pacman torsten;
         ghost spöke;
         Song pacsong;
+        SpriteFont scoreFont;
+
+        public static int score = 0;
+        public static int scoreCount = 0;
+        public static int maxScoreCount = 0;
+        public static bool gameFinished;
 
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
@@ -27,19 +34,21 @@ namespace pacman {
             _graphics.PreferredBackBufferHeight = height;
             _graphics.ApplyChanges();
 
-            torsten = new pacman(this, 13, 26, 2);
-            spöke = new ghost(this, 13, 14, 2);
-
+            sb = new SpriteBatch(GraphicsDevice);
 
             base.Initialize();
-            
         }
 
         protected override void LoadContent() {
-            
+
+            torsten = new pacman(this, 13, 26, 2);
+            spöke = new ghost(this, 13, 14, 8);
+
             map = new gameMap(this, 28, 36);
             map.InitializeWalls();
             this.pacsong = Content.Load<Song>("PACMAN_LOOP");
+
+            scoreFont = Content.Load<SpriteFont>("scoreFont");
             // TODO: use this.Content to load your game content here
         }
 
@@ -49,8 +58,14 @@ namespace pacman {
             
 
             // TODO: Add your update logic here
-            spöke.Update(map);
-            torsten.Update(map);
+            if(!gameFinished) {
+                spöke.Update(map);
+                torsten.Update(map);
+            }
+
+            if(scoreCount == maxScoreCount) {
+                gameFinished = true;
+            }
 
             base.Update(gameTime);
         }
@@ -63,6 +78,12 @@ namespace pacman {
             spöke.Draw(gameTime);
             torsten.Draw(gameTime);
 
+            sb.Begin();
+            sb.DrawString(scoreFont, "Score: " + score.ToString(), new Vector2(620, 960), Color.White);
+            if(gameFinished) {
+                sb.DrawString(scoreFont, "You won!!!", new Vector2(350, 50), Color.Yellow);
+            }
+            sb.End();
             base.Draw(gameTime);
         }
     }

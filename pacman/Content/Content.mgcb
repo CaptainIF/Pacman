@@ -31,6 +31,13 @@
 /processorParam:TextureFormat=Color
 /build:pacmanSprite.png
 
+#begin scoreFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:scoreFont.spritefont
+
 #begin spriteMap_pacman.png
 /importer:TextureImporter
 /processor:TextureProcessor
