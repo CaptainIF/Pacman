@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin PACMAN_LOOP.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PACMAN_LOOP.wav
+
 #begin pacmanSprite.png
 /importer:TextureImporter
 /processor:TextureProcessor

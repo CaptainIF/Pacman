@@ -48,38 +48,78 @@ namespace pacman {
 
             //Debug.WriteLine(torsten.currentI);
 
-            
 
-            if (kstate.IsKeyDown(Keys.W)) {
-                if (map.tiles[this.currentI, this.currentJ - 1].tileID == 1 && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
+
+            /*if (kstate.IsKeyDown(Keys.W)) {
+                if ((map.tiles[this.currentI, this.currentJ - 1].tileID == 1 || map.tiles[this.currentI, this.currentJ - 1].tileID == 2) && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
                     this.dir.X = 0;
                     this.dir.Y = -1;
                 }
             }
             if (kstate.IsKeyDown(Keys.S)) {
-                if (map.tiles[this.currentI, this.currentJ + 1].tileID == 1 && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
+                if ((map.tiles[this.currentI, this.currentJ + 1].tileID == 1 || map.tiles[this.currentI, this.currentJ + 1].tileID == 2) && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
                     this.dir.X = 0;
                     this.dir.Y = 1;
                 }
             }
             if (kstate.IsKeyDown(Keys.A)) {
-                if (map.tiles[this.currentI - 1, this.currentJ].tileID == 1 && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
+                if ((map.tiles[this.currentI - 1, this.currentJ].tileID == 1 || map.tiles[this.currentI - 1, this.currentJ].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
                     this.dir.X = -1;
                     this.dir.Y = 0;
                 }
             }
             if (kstate.IsKeyDown(Keys.D)) {
-                if (map.tiles[this.currentI + 1, this.currentJ].tileID == 1 && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
+                if ((map.tiles[this.currentI + 1, this.currentJ].tileID == 1 || map.tiles[this.currentI +1, this.currentJ].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
                     this.dir.X = 1;
                     this.dir.Y = 0;
                 }
             }
 
-            if (map.tiles[(int)((this.pos.X /*+ this.dir.X * 28*/ + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1) {
+            if (map.tiles[(int)((this.pos.X /*+ this.dir.X * 28 + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1 || map.tiles[(int)((this.pos.X + this.dir.X * 28 + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
                 this.pos.X += this.dir.X;
                 this.pos.Y += this.dir.Y;
+            }else {
+                this.dir.X = 0;
+                this.dir.Y = 0;
+                this.pos.X = this.currentI * 28 + 14;
+                this.pos.Y = this.currentJ * 28 + 14; 
+
+            } */
+            if (kstate.IsKeyDown(Keys.Up)) {
+                if ((map.tiles[this.currentI, this.currentJ - 1].tileID == 1 || map.tiles[this.currentI, this.currentJ - 1].tileID == 2) && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
+                    this.dir.X = 0;
+                    this.dir.Y = -1;
+                }
+            }
+            if (kstate.IsKeyDown(Keys.Down)) {
+                if ((map.tiles[this.currentI, this.currentJ + 1].tileID == 1 || map.tiles[this.currentI, this.currentJ + 1].tileID == 2) && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
+                    this.dir.X = 0;
+                    this.dir.Y = 1;
+                }
+            }
+            if (kstate.IsKeyDown(Keys.Left)) {
+                if ((map.tiles[this.currentI - 1, this.currentJ].tileID == 1 || map.tiles[this.currentI - 1, this.currentJ].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
+                    this.dir.X = -1;
+                    this.dir.Y = 0;
+                }
+            }
+            if (kstate.IsKeyDown(Keys.Right)) {
+                if ((map.tiles[this.currentI + 1, this.currentJ].tileID == 1 || map.tiles[this.currentI + 1, this.currentJ].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
+                    this.dir.X = 1;
+                    this.dir.Y = 0;
+                }
             }
 
+            if (map.tiles[(int)((this.pos.X /*+ this.dir.X * 28*/ + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1 || map.tiles[(int)((this.pos.X /*+ this.dir.X * 28*/ + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
+                this.pos.X += this.dir.X * this.speed;
+                this.pos.Y += this.dir.Y * this.speed;
+            }
+            else {
+                this.dir.X = 0;
+                this.dir.Y = 0;
+                this.pos.X = this.currentI * 28 + 14;
+                this.pos.Y = this.currentJ * 28 + 14;
+            }
 
         }
 

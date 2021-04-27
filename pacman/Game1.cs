@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace pacman {
     public class Game1 : Game {
@@ -10,6 +11,7 @@ namespace pacman {
         const int height = 1008;
         pacman torsten;
         ghost spöke;
+        Song pacsong;
 
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
@@ -26,7 +28,7 @@ namespace pacman {
             _graphics.ApplyChanges();
 
             torsten = new pacman(this, 13, 26, 2);
-            spöke = new ghost(this, 13, 14, 8);
+            spöke = new ghost(this, 13, 14, 2);
 
 
             base.Initialize();
@@ -37,6 +39,7 @@ namespace pacman {
             
             map = new gameMap(this, 28, 36);
             map.InitializeWalls();
+            this.pacsong = Content.Load<Song>("PACMAN_LOOP");
             // TODO: use this.Content to load your game content here
         }
 
