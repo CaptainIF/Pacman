@@ -47,6 +47,8 @@ namespace pacman {
             map = new gameMap(this, 28, 36);
             map.InitializeWalls();
             this.pacsong = Content.Load<Song>("PACMAN_LOOP");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(this.pacsong);
 
             scoreFont = Content.Load<SpriteFont>("scoreFont");
             // TODO: use this.Content to load your game content here
