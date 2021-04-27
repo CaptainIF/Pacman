@@ -86,25 +86,25 @@ namespace pacman {
                 this.pos.Y = this.currentJ * 28 + 14; 
 
             } */
-            if (kstate.IsKeyDown(Keys.Up)) {
+            if (kstate.IsKeyDown(Keys.W)) {
                 if ((map.tiles[this.currentI, this.currentJ - 1].tileID == 1 || map.tiles[this.currentI, this.currentJ - 1].tileID == 2) && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
                     this.dir.X = 0;
                     this.dir.Y = -1;
                 }
             }
-            if (kstate.IsKeyDown(Keys.Down)) {
+            if (kstate.IsKeyDown(Keys.S)) {
                 if ((map.tiles[this.currentI, this.currentJ + 1].tileID == 1 || map.tiles[this.currentI, this.currentJ + 1].tileID == 2) && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
                     this.dir.X = 0;
                     this.dir.Y = 1;
                 }
             }
-            if (kstate.IsKeyDown(Keys.Left)) {
+            if (kstate.IsKeyDown(Keys.A)) {
                 if ((map.tiles[this.currentI - 1, this.currentJ].tileID == 1 || map.tiles[this.currentI - 1, this.currentJ].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
                     this.dir.X = -1;
                     this.dir.Y = 0;
                 }
             }
-            if (kstate.IsKeyDown(Keys.Right)) {
+            if (kstate.IsKeyDown(Keys.D)) {
                 if ((map.tiles[this.currentI + 1, this.currentJ].tileID == 1 || map.tiles[this.currentI + 1, this.currentJ].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
                     this.dir.X = 1;
                     this.dir.Y = 0;
