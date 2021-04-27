@@ -30,6 +30,8 @@ namespace pacman {
             if(map.tiles[currentI, currentJ].tileID == 2) {
                 map.tiles[currentI, currentJ].tileID = 1;
                 map.tiles[currentI, currentJ].Init();
+                Game1.score += 10;
+                Game1.scoreCount++;
             }
 
             var kstate = Keyboard.GetState();
