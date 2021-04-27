@@ -31,62 +31,21 @@ namespace pacman {
             this.speed = speed;
             this.pos.X = i * 28 + 14;
             this.pos.Y = j * 28 + 14;
-            this.dir.X = 0;
+            this.dir.X = -1;
             this.dir.Y = 0;
 
         }
 
-        public void Update(gameMap map) {
+        public void Update(gameMap map, pacman torsten) {
             this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
             this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
             var kstate = Keyboard.GetState();
-            bool neighbour = map.tiles[currentI, currentJ].CheckWallNeighbours(map);
-
-            /*if(keylol.IsKeyDown(Keys.Up)) {
-                this.dir.X = 0;
-                this.dir.Y = -1;
-            }*/
-
-            //Debug.WriteLine(torsten.currentI);
-
+            var neighbour = map.tiles[currentI, currentJ].CheckNeighbours(map);
+            
+            Debug.WriteLine(neighbour.Count);
 
 
             /*if (kstate.IsKeyDown(Keys.W)) {
-                if ((map.tiles[this.currentI, this.currentJ - 1].tileID == 1 || map.tiles[this.currentI, this.currentJ - 1].tileID == 2) && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
-                    this.dir.X = 0;
-                    this.dir.Y = -1;
-                }
-            }
-            if (kstate.IsKeyDown(Keys.S)) {
-                if ((map.tiles[this.currentI, this.currentJ + 1].tileID == 1 || map.tiles[this.currentI, this.currentJ + 1].tileID == 2) && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
-                    this.dir.X = 0;
-                    this.dir.Y = 1;
-                }
-            }
-            if (kstate.IsKeyDown(Keys.A)) {
-                if ((map.tiles[this.currentI - 1, this.currentJ].tileID == 1 || map.tiles[this.currentI - 1, this.currentJ].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
-                    this.dir.X = -1;
-                    this.dir.Y = 0;
-                }
-            }
-            if (kstate.IsKeyDown(Keys.D)) {
-                if ((map.tiles[this.currentI + 1, this.currentJ].tileID == 1 || map.tiles[this.currentI +1, this.currentJ].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
-                    this.dir.X = 1;
-                    this.dir.Y = 0;
-                }
-            }
-
-            if (map.tiles[(int)((this.pos.X /*+ this.dir.X * 28 + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1 || map.tiles[(int)((this.pos.X + this.dir.X * 28 + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
-                this.pos.X += this.dir.X;
-                this.pos.Y += this.dir.Y;
-            }else {
-                this.dir.X = 0;
-                this.dir.Y = 0;
-                this.pos.X = this.currentI * 28 + 14;
-                this.pos.Y = this.currentJ * 28 + 14; 
-
-            } */
-            if (kstate.IsKeyDown(Keys.W)) {
                 if ((map.tiles[this.currentI, this.currentJ - 1].tileID == 1 || map.tiles[this.currentI, this.currentJ - 1].tileID == 2) && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
                     this.dir.X = 0;
                     this.dir.Y = -1;
@@ -109,9 +68,35 @@ namespace pacman {
                     this.dir.X = 1;
                     this.dir.Y = 0;
                 }
+            }*/
+
+            /*if (neighbour.Count == 2) {
+
+                if ((map.tiles[this.currentI, this.currentJ - 1].tileID == 1 || map.tiles[this.currentI, this.currentJ - 1].tileID == 2) && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
+                    this.dir.X = 0;
+                    this.dir.Y = -1;
+                }
+
+
+                else if ((map.tiles[this.currentI, this.currentJ + 1].tileID == 1 || map.tiles[this.currentI, this.currentJ + 1].tileID == 2) && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
+                    this.dir.X = 0;
+                    this.dir.Y = 1;
+                }
+
+
+                else if ((map.tiles[this.currentI - 1, this.currentJ].tileID == 1 || map.tiles[this.currentI - 1, this.currentJ].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
+                    this.dir.X = -1;
+                    this.dir.Y = 0;
+                }
+
+
+                else if ((map.tiles[this.currentI + 1, this.currentJ].tileID == 1 || map.tiles[this.currentI + 1, this.currentJ].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
+                    this.dir.X = 1;
+                    this.dir.Y = 0;
+                }
             }
 
-            if (map.tiles[(int)((this.pos.X /*+ this.dir.X * 28*/ + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1 || map.tiles[(int)((this.pos.X /*+ this.dir.X * 28*/ + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
+            if (map.tiles[(int)((this.pos.X  + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1 || map.tiles[(int)((this.pos.X  + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
                 this.pos.X += this.dir.X * this.speed;
                 this.pos.Y += this.dir.Y * this.speed;
             }
@@ -121,8 +106,8 @@ namespace pacman {
                 this.pos.X = this.currentI * 28 + 14;
                 this.pos.Y = this.currentJ * 28 + 14;
             }
-
-        }
+            */
+        } 
 
         public void Draw(GameTime gt) {
             SpriteBatch sb = new SpriteBatch(GraphicsDevice);

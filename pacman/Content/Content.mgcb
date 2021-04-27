@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin chomp.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:chomp.mp3
+
 #begin PACMAN_LOOP.wav
 /importer:WavImporter
 /processor:SongProcessor

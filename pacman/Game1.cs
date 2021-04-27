@@ -46,7 +46,7 @@ namespace pacman {
 
             map = new gameMap(this, 28, 36);
             map.InitializeWalls();
-            this.pacsong = Content.Load<Song>("PACMAN_LOOP");
+            this.pacsong = Content.Load<Song>("PACMAN_LOOP");           
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(this.pacsong);
 
@@ -61,13 +61,13 @@ namespace pacman {
 
             // TODO: Add your update logic here
             if(!gameFinished) {
-                spöke.Update(map);
+                spöke.Update(map, torsten);
                 torsten.Update(map);
             }
 
             if(scoreCount == maxScoreCount) {
                 gameFinished = true;
-            }
+            }     
 
             base.Update(gameTime);
         }
