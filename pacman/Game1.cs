@@ -33,6 +33,7 @@ namespace pacman {
             
             _graphics.PreferredBackBufferWidth = width;
             _graphics.PreferredBackBufferHeight = height;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
             sb = new SpriteBatch(GraphicsDevice);
