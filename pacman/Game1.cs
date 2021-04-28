@@ -50,8 +50,7 @@ namespace pacman {
             map = new gameMap(this, 28, 36, spriteMap);
             map.InitializeWalls();
             torsten.init();
-            this.pacsong = Content.Load<Song>("PACMAN_LOOP");           
-            MediaPlayer.IsRepeating = true;
+            this.pacsong = Content.Load<Song>("PACMAN_LOOP");
             MediaPlayer.Play(this.pacsong);
 
             scoreFont = Content.Load<SpriteFont>("scoreFont");

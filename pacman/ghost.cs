@@ -35,37 +35,7 @@ namespace pacman {
                 //Debug.WriteLine(map.tiles[currentI, currentJ].tileID);
                 
 
-                if ((map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && map.tiles[this.currentI, this.currentJ + 1].tileID == 0 && this.dir.X == 0) {
-                    this.dir.X = 0;
-                    this.dir.Y = -1;
-
-                    Debug.WriteLine("UP");
-                }
-                else if ((map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && map.tiles[this.currentI, this.currentJ - 1].tileID == 0 && this.dir.X == 0) {
-                    this.dir.X = 0;
-                    this.dir.Y = 1;
-
-                    Debug.WriteLine("DOWN");
-
-                }
-
-
-                else if ((map.tiles[this.currentI, this.currentJ + 1].tileID == 0 || map.tiles[this.currentI, this.currentJ - 1].tileID == 0) && (map.tiles[this.currentI + 1, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI + 1, currentJ + 1].tileID == 0) && this.dir.Y == 0) {
-                    this.dir.X = -1;
-                    this.dir.Y = 0;
-
-                    Debug.WriteLine("LEFT");
-
-                }
-
-
-                else if ((map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && (map.tiles[this.currentI - 1, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI - 1, currentJ + 1].tileID == 0) && this.dir.Y == 0) {
-                    this.dir.X = 1;
-                    this.dir.Y = 0;
-
-                    Debug.WriteLine("RIGHT");
-
-                }
+                
             }
 
                 if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
@@ -75,11 +45,34 @@ namespace pacman {
                 //Debug.WriteLine("keep going");
                 }
                 else {
-                    this.dir.X = 0;
-                    this.dir.Y = 0;
                     this.pos.X = this.currentI * 28 + 14;
                     this.pos.Y = this.currentJ * 28 + 14;
-                }        
+
+                    if (map.tiles[this.currentI, this.currentJ + 1].tileID == 0 && (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && this.dir.X != 0) {
+                        this.dir.X = 0;
+                        this.dir.Y = -1;
+
+                        Debug.WriteLine("UP");
+                    } else if (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 && (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && this.dir.X != 0) {
+                        this.dir.X = 0;
+                        this.dir.Y = 1;
+
+                        Debug.WriteLine("DOWN");
+
+                    } else if (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
+                        this.dir.X = -1;
+                        this.dir.Y = 0;
+
+                        Debug.WriteLine("LEFT");
+
+                    } else if (map.tiles[this.currentI - 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
+                        this.dir.X = 1;
+                        this.dir.Y = 0;
+
+                        Debug.WriteLine("RIGHT");
+
+                    }
+                }       
         }
 
         public void Draw(GameTime gt) {
