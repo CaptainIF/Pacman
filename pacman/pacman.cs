@@ -66,7 +66,13 @@ namespace pacman {
             this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
             this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
 
-            
+            if((int)((this.pos.X + (this.dir.X * 14)) / 28) < 0) {
+                this.currentI = 27;
+                this.pos.X = currentI * 28;
+            } else if((int)((this.pos.X + (this.dir.X * 14)) / 28) > 27) {
+                this.currentI = 0;
+                this.pos.X = currentI * 28;
+            }
 
             if(map.tiles[currentI, currentJ].tileID == 2) {
                 map.tiles[currentI, currentJ].tileID = 1;
