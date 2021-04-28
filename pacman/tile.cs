@@ -15,7 +15,7 @@ namespace pacman {
         public bool innerCorner = false;
         public Game game;
 
-        public tile(Game game, int i, int j, int tileID) : base(game) {
+        public tile(Game game, int i, int j, int tileID, Texture2D spriteMap) : base(game) {
             this.position.X = i;
             this.position.Y = j;
             this.tileID = tileID;
@@ -161,17 +161,19 @@ namespace pacman {
     class gameMap : DrawableGameComponent {
         public int width, height;
         public tile[,] tiles;
-        public gameMap(Game game, int width, int height) : base(game) {
+        public Texture2D spriteMap;
+        public gameMap(Game game, int width, int height, Texture2D spriteMap) : base(game) {
             this.width = width;
             this.height = height;
             tiles = new tile[this.width, this.height];
+            this.spriteMap = spriteMap;
 
 
             using (StringReader testSR = new StringReader(Properties.Resources.pacmapText)) {
                 for (int j = 0; j < tiles.GetLength(1); j++) {
                     for (int i = 0; i < tiles.GetLength(0); i++) {
                         int symbol = testSR.Read() - 0x30;
-                        tile t = new tile(game, i, j, symbol);
+                        tile t = new tile(game, i, j, symbol, spriteMap);
                         tiles[i, j] = t;
                     }
                     testSR.Read();

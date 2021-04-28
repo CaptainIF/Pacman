@@ -14,6 +14,7 @@ namespace pacman {
         ghost spöke;
         Song pacsong;
         SpriteFont scoreFont;
+        Texture2D spriteMap;
 
         public static int score = 0;
         public static int scoreCount = 0;
@@ -41,11 +42,14 @@ namespace pacman {
 
         protected override void LoadContent() {
 
-            torsten = new pacman(this, 13, 26, 2);
+            spriteMap = Content.Load<Texture2D>("spriteMap_pacman");
+
+            torsten = new pacman(this, 13, 26, 2, spriteMap);
             spöke = new ghost(this, 13, 14, 2);
 
-            map = new gameMap(this, 28, 36);
+            map = new gameMap(this, 28, 36, spriteMap);
             map.InitializeWalls();
+            torsten.init();
             this.pacsong = Content.Load<Song>("PACMAN_LOOP");           
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(this.pacsong);
