@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -153,7 +154,7 @@ namespace pacman {
 
         public void Draw(SpriteBatch sb) {
             //RenderTarget2D target = new RenderTarget2D(GraphicsDevice, size, size);
-            Rectangle target = new Rectangle((int)position.X * size, (int)position.Y * size, size, size);
+            Rectangle target = new Rectangle((int)Math.Round((position.X * size) * Game1.scaling), (int)Math.Round((position.Y * size) * Game1.scaling), (int)Math.Round(size * Game1.scaling), (int)Math.Round(size * Game1.scaling));
             sb.Draw(tileTexture, target, Color.White);
         }
 

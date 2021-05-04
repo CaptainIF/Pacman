@@ -10,8 +10,11 @@ namespace pacman {
         private GraphicsDeviceManager _graphics;
         SpriteBatch sb;
         gameMap map;
-        static double width = 784;
-        static double height = 1008;
+        public static double scaling = 1;
+        static double originalWidth = 784;
+        static double originalHeight = 1008;
+        static double width = originalWidth;
+        static double height = originalHeight;
         static double proportions = height / width;
         pacman torsten;
         ghost spöke;
@@ -41,6 +44,7 @@ namespace pacman {
                 height = GraphicsDevice.PresentationParameters.BackBufferHeight;
                 width = Math.Round(height / proportions);
             }
+            scaling = width / originalWidth;
             _graphics.PreferredBackBufferWidth = (int)width;
             _graphics.PreferredBackBufferHeight = (int)height;
             _graphics.ApplyChanges();
@@ -49,9 +53,8 @@ namespace pacman {
         protected override void Initialize() {
             // TODO: Add your initialization logic here
             
-            _graphics.PreferredBackBufferWidth = width;
-            _graphics.PreferredBackBufferHeight = height;
-            _graphics.IsFullScreen = true;
+            _graphics.PreferredBackBufferWidth = (int)width;
+            _graphics.PreferredBackBufferHeight = (int)height;
             _graphics.ApplyChanges();
 
             sb = new SpriteBatch(GraphicsDevice);
@@ -107,9 +110,9 @@ namespace pacman {
             torsten.Draw(gameTime);
 
             sb.Begin();
-            sb.DrawString(scoreFont, "Score: " + score.ToString(), new Vector2(620, 960), Color.White);
+            sb.DrawString(scoreFont, "Score: " + score.ToString(), new Vector2((int)Math.Round(620 * scaling), (int)Math.Round(960 * scaling)), Color.White);
             if(gameFinished) {
-                sb.DrawString(scoreFont, "You won!!!", new Vector2(350, 50), Color.Yellow);
+                sb.DrawString(scoreFont, "You won!!!", new Vector2((int)Math.Round(350 * scaling), (int)Math.Round(50 * scaling)), Color.Yellow);
             }
             sb.End();
             base.Draw(gameTime);
