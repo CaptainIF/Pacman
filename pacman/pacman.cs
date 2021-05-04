@@ -152,7 +152,7 @@ namespace pacman {
 
 
             sb.Begin();
-            sb.Draw(pacmanTextures[this.currentTexture], new Vector2((int)this.pos.X, (int)this.pos.Y), null, Color.White, this.rotation, new Vector2(this.width / 2, this.width / 2), 1f, SpriteEffects.None, 0);
+            sb.Draw(pacmanTextures[this.currentTexture], new Vector2((int)Math.Round(this.pos.X * Game1.scaling), (int)Math.Round(this.pos.Y * Game1.scaling)), null, Color.White, this.rotation, new Vector2((int)Math.Round((this.width * Game1.scaling) / 2), (int)Math.Round((this.width * Game1.scaling) / 2)), (float)Game1.scaling, SpriteEffects.None, 0);
             sb.End();
         }
 

@@ -91,7 +91,7 @@ namespace pacman {
             this.texture = Game.Content.Load<Texture2D>("spöke_1");
 
             sb.Begin();
-            sb.Draw(this.texture, new Rectangle((int)this.pos.X - this.width / 2, (int)this.pos.Y - this.width / 2, this.width, this.width), Color.White);
+            sb.Draw(this.texture, new Rectangle((int)Math.Round((this.pos.X - this.width / 2) * Game1.scaling), (int)Math.Round((this.pos.Y - this.width / 2) * Game1.scaling), (int)Math.Round(this.width * Game1.scaling), (int)Math.Round(this.width * Game1.scaling)), Color.White);
             sb.End();
         }
 
