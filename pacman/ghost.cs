@@ -78,7 +78,8 @@ namespace pacman {
 
 
             } else if(neighbour.Count == 1) {
-
+                this.pos.X = this.currentI * 28 + 14;
+                this.pos.Y = this.currentJ * 28 + 14;
             }
 
             
