@@ -15,15 +15,15 @@
 
 #begin chomp.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:chomp.mp3
 
-#begin PACMAN_LOOP.wav
+#begin PACMAN_intro.wav
 /importer:WavImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:PACMAN_LOOP.wav
+/build:PACMAN_intro.wav
 
 #begin scoreFont.spritefont
 /importer:FontDescriptionImporter

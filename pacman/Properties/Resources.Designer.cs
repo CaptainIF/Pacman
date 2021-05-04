@@ -78,7 +78,7 @@ namespace pacman.Properties {
         ///0000002001111111111002000000
         ///0000002001000000001002000000
         ///0000002001000000001002000000
-        ///00 [rest of string was truncated]&quot;;.
+        ///11 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string pacmapText {
             get {

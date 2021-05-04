@@ -30,21 +30,15 @@ namespace pacman {
             var kstate = Keyboard.GetState();
             var neighbour = map.tiles[currentI, currentJ].CheckNeighbours(map);
 
-            if (neighbour.Count == 2 || neighbour.Count == 1 && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
-
-                //Debug.WriteLine(map.tiles[currentI, currentJ].tileID);
-                
-
-                
-            }
 
                 if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
                     || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
                     this.pos.X += this.dir.X * this.speed;
                     this.pos.Y += this.dir.Y * this.speed;
-                //Debug.WriteLine("keep going");
                 }
-                else {
+                              
+                else if(neighbour.Count == 2) {
+                Debug.WriteLine("hello");
                     this.pos.X = this.currentI * 28 + 14;
                     this.pos.Y = this.currentJ * 28 + 14;
 
@@ -72,7 +66,13 @@ namespace pacman {
                         Debug.WriteLine("RIGHT");
 
                     }
-                }       
+                } else if(neighbour.Count == 1) {
+                     if(this.dir.X == 1) {
+                    int nextTileLeft = this.currentJ - 1;
+                    int nextTileRight = this.currentJ + 1;
+                }
+            }
+                   
         }
 
         public void Draw(GameTime gt) {

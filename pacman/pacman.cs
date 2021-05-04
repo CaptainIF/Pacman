@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -20,6 +21,8 @@ namespace pacman {
         public int textureSpeed = 7;
         public int textureCount = 0;
         public float rotation = 0;
+        public SoundEffect chomp;
+        public SoundEffectInstance chompInstance;
 
         public pacman(Game game, int i, int j, int speed, Texture2D spriteMap) : base(game) {
             this.pos.X = i * 28 + 28 / 2;
@@ -28,6 +31,9 @@ namespace pacman {
             this.dir.Y = 0;
             this.speed = speed;
             this.spriteMap = spriteMap;
+            chomp = Game.Content.Load<SoundEffect>("chomp");
+            chompInstance = chomp.CreateInstance();
+            chompInstance.Volume = 0.1f;
         }
 
         public void init() {
@@ -60,6 +66,14 @@ namespace pacman {
             this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
             this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
 
+            if((int)((this.pos.X + (this.dir.X * 14)) / 28) < 0) {
+                this.currentI = 27;
+                this.pos.X = currentI * 28;
+            } else if((int)((this.pos.X + (this.dir.X * 14)) / 28) > 27) {
+                this.currentI = 0;
+                this.pos.X = currentI * 28;
+            }
+
             if(map.tiles[currentI, currentJ].tileID == 2) {
                 map.tiles[currentI, currentJ].tileID = 1;
                 map.tiles[currentI, currentJ].Init();
@@ -69,28 +83,28 @@ namespace pacman {
 
             var kstate = Keyboard.GetState();
 
-            if (kstate.IsKeyDown(Keys.Up)) {
+            if (kstate.IsKeyDown(Keys.Up) || kstate.IsKeyDown(Keys.W)) {
                 if ((map.tiles[this.currentI, this.currentJ - 1].tileID == 1 || map.tiles[this.currentI, this.currentJ - 1].tileID == 2) && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
                     this.dir.X = 0;
                     this.dir.Y = -1;
                     this.rotation = (float)Math.PI + (float)Math.PI / 2;
                 }
             }
-            if (kstate.IsKeyDown(Keys.Down)) {
+            if (kstate.IsKeyDown(Keys.Down) || kstate.IsKeyDown(Keys.S)) {
                 if ((map.tiles[this.currentI, this.currentJ + 1].tileID == 1 || map.tiles[this.currentI, this.currentJ + 1].tileID == 2) && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
                     this.dir.X = 0;
                     this.dir.Y = 1;
                     this.rotation = (float)Math.PI / 2;
                 }
             }
-            if (kstate.IsKeyDown(Keys.Left)) {
+            if (kstate.IsKeyDown(Keys.Left) || kstate.IsKeyDown(Keys.A)) {
                 if ((map.tiles[this.currentI - 1, this.currentJ].tileID == 1 || map.tiles[this.currentI - 1, this.currentJ].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
                     this.dir.X = -1;
                     this.dir.Y = 0;
                     this.rotation = (float)Math.PI;
                 }
             }
-            if (kstate.IsKeyDown(Keys.Right)) {
+            if (kstate.IsKeyDown(Keys.Right) || kstate.IsKeyDown(Keys.D)) {
                 if ((map.tiles[this.currentI + 1, this.currentJ].tileID == 1 || map.tiles[this.currentI + 1, this.currentJ].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
                     this.dir.X = 1;
                     this.dir.Y = 0;
@@ -118,6 +132,10 @@ namespace pacman {
 
                 if (currentTexture == pacmanTextures.Length) {
                     currentTexture = 0;
+                }
+
+                if(chompInstance.State != SoundState.Playing) {
+                    chompInstance.Play();
                 }
             } else {
                 currentTexture = 0;

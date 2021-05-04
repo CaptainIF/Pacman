@@ -48,6 +48,11 @@ namespace pacman {
 
         protected override void Initialize() {
             // TODO: Add your initialization logic here
+            
+            _graphics.PreferredBackBufferWidth = width;
+            _graphics.PreferredBackBufferHeight = height;
+            _graphics.IsFullScreen = true;
+            _graphics.ApplyChanges();
 
             sb = new SpriteBatch(GraphicsDevice);
 
@@ -68,7 +73,7 @@ namespace pacman {
             map = new gameMap(this, 28, 36, spriteMap);
             map.InitializeWalls();
             torsten.init();
-            this.pacsong = Content.Load<Song>("PACMAN_LOOP");
+            this.pacsong = Content.Load<Song>("PACMAN_intro");
             MediaPlayer.Play(this.pacsong);
 
             scoreFont = Content.Load<SpriteFont>("scoreFont");
