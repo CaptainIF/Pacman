@@ -123,6 +123,28 @@ namespace pacman {
             return neighbours;
         }
 
+        public List<tile> CheckWheyNeighbours(gameMap map) {
+            tile[,] grid = map.tiles;
+            int i = (int)this.position.X;
+            int j = (int)this.position.Y;
+            List<tile> neighbours = new List<tile>();
+            if ((j - 1) >= 0 && grid[i, j - 1].tileID == 1 || (j - 1) >= 0 && grid[i, j - 1].tileID == 2) {
+                neighbours.Add(grid[i, j - 1]);
+            }
+            if ((i + 1) < map.width && grid[i + 1, j].tileID == 1 || (j - 1) >= 0 && grid[i, j - 1].tileID == 2) {
+                neighbours.Add(grid[i + 1, j]);
+            }
+            if ((j + 1) < map.height && grid[i, j + 1].tileID == 1 || (j - 1) >= 0 && grid[i, j - 1].tileID == 2) {
+                neighbours.Add(grid[i, j + 1]);
+            }
+            if ((i - 1) >= 0 && grid[i - 1, j].tileID == 1 || (j - 1) >= 0 && grid[i, j - 1].tileID == 2) {
+                neighbours.Add(grid[i - 1, j]);
+            }
+
+
+            return neighbours;
+        }
+
         public bool CheckWallNeighbours(gameMap map) {
             tile[,] grid = map.tiles;
             int i = (int)this.position.X;

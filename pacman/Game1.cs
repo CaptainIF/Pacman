@@ -33,7 +33,6 @@ namespace pacman {
             
             _graphics.PreferredBackBufferWidth = width;
             _graphics.PreferredBackBufferHeight = height;
-            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
             sb = new SpriteBatch(GraphicsDevice);
@@ -68,6 +67,7 @@ namespace pacman {
                 spöke.Update(map, torsten);
                 torsten.Update(map);
             }
+
 
             if(scoreCount == maxScoreCount) {
                 gameFinished = true;
