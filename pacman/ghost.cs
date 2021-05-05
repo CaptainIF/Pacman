@@ -31,14 +31,17 @@ namespace pacman {
             var neighbour = map.tiles[currentI, currentJ].CheckNeighbours(map);
 
 
+
+            if (neighbour.Count == 2) {
+
                 if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
                     || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
                     this.pos.X += this.dir.X * this.speed;
                     this.pos.Y += this.dir.Y * this.speed;
                 }
-                              
-                else if(neighbour.Count == 2) {
-                Debug.WriteLine("hello");
+
+                else {
+                    Debug.WriteLine("hello");
                     this.pos.X = this.currentI * 28 + 14;
                     this.pos.Y = this.currentJ * 28 + 14;
 
@@ -47,31 +50,39 @@ namespace pacman {
                         this.dir.Y = -1;
 
                         Debug.WriteLine("UP");
-                    } else if (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 && (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && this.dir.X != 0) {
+                    }
+                    else if (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 && (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && this.dir.X != 0) {
                         this.dir.X = 0;
                         this.dir.Y = 1;
 
                         Debug.WriteLine("DOWN");
 
-                    } else if (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
+                    }
+                    else if (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
                         this.dir.X = -1;
                         this.dir.Y = 0;
 
                         Debug.WriteLine("LEFT");
 
-                    } else if (map.tiles[this.currentI - 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
+                    }
+                    else if (map.tiles[this.currentI - 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
                         this.dir.X = 1;
                         this.dir.Y = 0;
 
                         Debug.WriteLine("RIGHT");
 
                     }
-                } else if(neighbour.Count == 1) {
-                     if(this.dir.X == 1) {
-                    int nextTileLeft = this.currentJ - 1;
-                    int nextTileRight = this.currentJ + 1;
+
                 }
+
+
+
+            } else if(neighbour.Count == 1) {
+                this.pos.X = this.currentI * 28 + 14;
+                this.pos.Y = this.currentJ * 28 + 14;
             }
+
+            
                    
         }
 

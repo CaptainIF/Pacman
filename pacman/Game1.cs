@@ -95,6 +95,7 @@ namespace pacman {
                 torsten.Update(map);
             }
 
+
             if(scoreCount == maxScoreCount) {
                 gameFinished = true;
             }     
