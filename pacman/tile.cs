@@ -12,6 +12,7 @@ namespace pacman {
         int wallID = 0;
         public Vector2 position;
         public int tileID;
+        public int metadata = 0;
         Texture2D tileTexture;
         public bool innerCorner = false;
         public Game game;
@@ -24,18 +25,29 @@ namespace pacman {
         }
         public void Init() {
             //this.position = position;
-            if (this.tileID == 1) {
-                Texture2D texture = new Texture2D(GraphicsDevice, 1, 1);
-                texture.SetData(new Color[] { Color.Black });
-                this.tileTexture = texture;
+            if (this.tileID == 1 || this.tileID == 2) {
+                if(this.metadata == 2) {
+                    Game1.maxScoreCount++;
+                    Texture2D allTiles = Game.Content.Load<Texture2D>("spriteMap_pacman");
+                    Rectangle source = new Rectangle(size * 6, 0, size, size);
+                    tileTexture = new Texture2D(GraphicsDevice, source.Width, source.Height);
+                    Color[] data = new Color[source.Width * source.Height];
+                    allTiles.GetData(0, source, data, 0, data.Length);
+                    tileTexture.SetData(data);
+                } else if(this.metadata == 3) {
+                    Texture2D allTiles = Game.Content.Load<Texture2D>("spriteMap_pacman");
+                    Rectangle source = new Rectangle(size * 7, 0, size, size);
+                    tileTexture = new Texture2D(GraphicsDevice, source.Width, source.Height);
+                    Color[] data = new Color[source.Width * source.Height];
+                    allTiles.GetData(0, source, data, 0, data.Length);
+                    tileTexture.SetData(data);
+                } else if(this.metadata == 0) {
+                    Texture2D texture = new Texture2D(GraphicsDevice, 1, 1);
+                    texture.SetData(new Color[] { Color.Black });
+                    this.tileTexture = texture;
+                }
             } else if (this.tileID == 2) {
-                Game1.maxScoreCount++;
-                Texture2D allTiles = Game.Content.Load<Texture2D>("spriteMap_pacman");
-                Rectangle source = new Rectangle(size * 6, 0, size, size);
-                tileTexture = new Texture2D(GraphicsDevice, source.Width, source.Height);
-                Color[] data = new Color[source.Width * source.Height];
-                allTiles.GetData(0, source, data, 0, data.Length);
-                tileTexture.SetData(data);
+                
             } else if (this.wallID == 6) {
                 Texture2D texture = new Texture2D(GraphicsDevice, 1, 1);
                 texture.SetData(new Color[] { Color.Black });
@@ -174,8 +186,19 @@ namespace pacman {
                 for (int j = 0; j < tiles.GetLength(1); j++) {
                     for (int i = 0; i < tiles.GetLength(0); i++) {
                         int symbol = testSR.Read() - 0x30;
-                        tile t = new tile(game, i, j, symbol, spriteMap);
-                        tiles[i, j] = t;
+                        tile t;
+                        if (symbol == 2) {
+                            t = new tile(game, i, j, 1, spriteMap);
+                            tiles[i, j] = t;
+                            tiles[i, j].metadata = 2;
+                        } else if (symbol == 3) {
+                            t = new tile(game, i, j, 1, spriteMap);
+                            tiles[i, j] = t;
+                            tiles[i, j].metadata = 3;
+                        } else {
+                            t = new tile(game, i, j, symbol, spriteMap);
+                            tiles[i, j] = t;
+                        }
                     }
                     testSR.Read();
                     testSR.Read();//fixar radbrytningar

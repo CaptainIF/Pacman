@@ -74,11 +74,15 @@ namespace pacman {
                 this.pos.X = currentI * 28;
             }
 
-            if(map.tiles[currentI, currentJ].tileID == 2) {
-                map.tiles[currentI, currentJ].tileID = 1;
+            if(map.tiles[currentI, currentJ].metadata == 2) {
+                map.tiles[currentI, currentJ].metadata = 0;
                 map.tiles[currentI, currentJ].Init();
                 Game1.score += 10;
                 Game1.scoreCount++;
+            } else if(map.tiles[currentI, currentJ].metadata == 3) {
+                map.tiles[currentI, currentJ].metadata = 0;
+                map.tiles[currentI, currentJ].Init();
+                Game1.rageMode = true;
             }
 
             var kstate = Keyboard.GetState();
@@ -114,8 +118,7 @@ namespace pacman {
 
             if (map.tiles[(int)((this.pos.X /*+ this.dir.X * 28*/ + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1 || map.tiles[(int)((this.pos.X /*+ this.dir.X * 28*/ + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
                 this.pos.X += this.dir.X * this.speed;
-                this.pos.Y += this.dir.Y * this.speed;
-                
+                this.pos.Y += this.dir.Y * this.speed;    
             } else {
                 this.dir.X = 0;
                 this.dir.Y = 0;

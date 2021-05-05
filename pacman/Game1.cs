@@ -26,6 +26,7 @@ namespace pacman {
         public static int scoreCount = 0;
         public static int maxScoreCount = 0;
         public static bool gameFinished;
+        public static bool rageMode = false;
 
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
@@ -113,6 +114,9 @@ namespace pacman {
             sb.DrawString(scoreFont, "Score: " + score.ToString(), new Vector2((int)Math.Round(620 * scaling), (int)Math.Round(960 * scaling)), Color.White);
             if(gameFinished) {
                 sb.DrawString(scoreFont, "You won!!!", new Vector2((int)Math.Round(350 * scaling), (int)Math.Round(50 * scaling)), Color.Yellow);
+            }
+            if(rageMode) {
+                sb.DrawString(scoreFont, "Rage!!!", new Vector2(350, 50), Color.Purple);
             }
             sb.End();
             base.Draw(gameTime);
