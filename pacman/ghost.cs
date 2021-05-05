@@ -14,6 +14,8 @@ namespace pacman {
         public int width = 50;
         public int currentI, currentJ;
         public Texture2D texture;
+        public tile tileOne;
+        public tile tileTwo;
 
         public ghost(Game game, int i, int j,int speed):base(game) {
 
@@ -29,6 +31,7 @@ namespace pacman {
             this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
             var kstate = Keyboard.GetState();
             var neighbour = map.tiles[currentI, currentJ].CheckNeighbours(map);
+            List<tile> nextNeighbour = map.tiles[currentI, currentJ].CheckWheyNeighbours(map);
 
 
 
@@ -77,13 +80,120 @@ namespace pacman {
 
 
 
-            } else if(neighbour.Count == 1) {
-                this.pos.X = this.currentI * 28 + 14;
-                this.pos.Y = this.currentJ * 28 + 14;
-            }
+            } else if (neighbour.Count == 1 && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
+                
+                if (this.dir.X == -1) {
+                    if (map.tiles[currentI, currentJ + 1].tileID == 0) {
+                        this.tileOne = nextNeighbour[0];
+                        this.tileTwo = nextNeighbour[2];
 
-            
-                   
+                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                        if (pathOne > pathTwo) {
+                            this.dir.Y = 0;
+                            this.dir.X = -1;
+                        } else {
+                            this.dir.Y = -1;
+                            this.dir.X = 0;
+                        }
+                    } else if (map.tiles[currentI - 1, currentJ].tileID == 0) {
+                        this.tileOne = nextNeighbour[0];
+                        this.tileTwo = nextNeighbour[2];
+
+                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                        if (pathOne > pathTwo) {
+                            this.dir.Y = 1;
+                            this.dir.X = 0;
+                        }
+                        else {
+                            this.dir.Y = -1;
+                            this.dir.X = 0;
+                        }
+                    } else if (map.tiles[currentI, currentJ - 1].tileID == 0) {
+                        this.tileOne = nextNeighbour[1];
+                        this.tileTwo = nextNeighbour[2];
+
+                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                        if (pathOne > pathTwo) {
+                            this.dir.Y = -1;
+                            this.dir.X = 0;
+                        }
+                        else {
+                            this.dir.Y = 0;
+                            this.dir.X = -1;
+                        }
+                    }
+                } else if (this.dir.X == 1) {
+                    if (map.tiles[currentI, currentJ + 1].tileID == 0) {
+                        this.tileOne = nextNeighbour[0];
+                        this.tileTwo = nextNeighbour[1];
+
+                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                        if (pathOne > pathTwo) {
+                            this.dir.Y = 0;
+                            this.dir.X = 1;
+                        } else {
+                            this.dir.Y = -1;
+                            this.dir.X = 0;
+                        }
+                    } else if (map.tiles[currentI + 1, currentJ].tileID == 0) {
+                        this.tileOne = nextNeighbour[0];
+                        this.tileTwo = nextNeighbour[1];
+
+                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                        if (pathOne > pathTwo) {
+                            this.dir.Y = -1;
+                            this.dir.X = 0;
+                        }
+                        else {
+                            this.dir.Y = 1;
+                            this.dir.X = 0;
+                        }
+                    } else if (map.tiles[currentI, currentJ - 1].tileID == 0) {
+                        this.tileOne = nextNeighbour[0];
+                        this.tileTwo = nextNeighbour[1];
+
+                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                        if (pathOne > pathTwo) {
+                            this.dir.Y = -1;
+                            this.dir.X = 0;
+                        }
+                        else {
+                            this.dir.Y = 0;
+                            this.dir.X = 1;
+                        }
+                    }
+                }
+
+                if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
+                    || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
+                    this.pos.X += this.dir.X * this.speed;
+                    this.pos.Y += this.dir.Y * this.speed;
+                }
+
+            } else {
+                if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
+                    || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
+                    this.pos.X += this.dir.X * this.speed;
+                    this.pos.Y += this.dir.Y * this.speed;
+                }
+            }
+        }
+
+        public double pyth(int a, int b) {
+            double hypo = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
+            return hypo;
         }
 
         public void Draw(GameTime gt) {
