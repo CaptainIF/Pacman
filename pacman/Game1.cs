@@ -26,6 +26,7 @@ namespace pacman {
         public static int scoreCount = 0;
         public static int maxScoreCount = 0;
         public static bool gameFinished;
+        public static bool gameOver;
         public static bool rageMode = false;
 
         public Game1() {
@@ -90,9 +91,14 @@ namespace pacman {
             
 
             // TODO: Add your update logic here
-            if(!gameFinished) {
+            if(!gameFinished && !gameOver) {
                 spöke.Update(map, torsten);
                 torsten.Update(map);
+            }
+            
+
+            if ((torsten.currentI == spöke.currentI) && (torsten.currentJ == spöke.currentJ)) {
+                gameOver = true;
             }
 
 
@@ -116,7 +122,10 @@ namespace pacman {
             if(gameFinished) {
                 sb.DrawString(scoreFont, "You won!!!", new Vector2((int)Math.Round(350 * scaling), (int)Math.Round(50 * scaling)), Color.Yellow);
             }
-            if(rageMode) {
+            if (gameOver) {
+                sb.DrawString(scoreFont, "GAME OVER!!!", new Vector2((int)Math.Round(350 * scaling), (int)Math.Round(50 * scaling)), Color.Yellow);
+            }
+            if (rageMode) {
                 sb.DrawString(scoreFont, "Rage!!!", new Vector2(350, 50), Color.Purple);
             }
             sb.End();
