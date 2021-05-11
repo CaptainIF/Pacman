@@ -44,36 +44,24 @@ namespace pacman {
                 }
 
                 else {
-                    Debug.WriteLine("hello");
                     this.pos.X = this.currentI * 28 + 14;
                     this.pos.Y = this.currentJ * 28 + 14;
 
                     if (map.tiles[this.currentI, this.currentJ + 1].tileID == 0 && (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && this.dir.X != 0) {
                         this.dir.X = 0;
                         this.dir.Y = -1;
-
-                        Debug.WriteLine("UP");
                     }
                     else if (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 && (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && this.dir.X != 0) {
                         this.dir.X = 0;
                         this.dir.Y = 1;
-
-                        Debug.WriteLine("DOWN");
-
                     }
                     else if (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
                         this.dir.X = -1;
                         this.dir.Y = 0;
-
-                        Debug.WriteLine("LEFT");
-
                     }
                     else if (map.tiles[this.currentI - 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
                         this.dir.X = 1;
                         this.dir.Y = 0;
-
-                        Debug.WriteLine("RIGHT");
-
                     }
 
                 }
