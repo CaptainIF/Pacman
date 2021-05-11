@@ -27,6 +27,10 @@ namespace pacman {
             this.dir.Y = 0;
         }
 
+        public void ghostDied() {
+
+        }
+
         public void Update(gameMap map, pacman torsten) {
             this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
             this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
@@ -62,17 +66,14 @@ namespace pacman {
                     else if (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 && (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && this.dir.X != 0) {
                         this.dir.X = 0;
                         this.dir.Y = 1;
-
                     }
                     else if (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
                         this.dir.X = -1;
                         this.dir.Y = 0;
-
                     }
                     else if (map.tiles[this.currentI - 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
                         this.dir.X = 1;
                         this.dir.Y = 0;
-
                     }
 
                 }

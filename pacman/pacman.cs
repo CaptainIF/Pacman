@@ -88,28 +88,28 @@ namespace pacman {
             var kstate = Keyboard.GetState();
 
             if (kstate.IsKeyDown(Keys.Up) || kstate.IsKeyDown(Keys.W)) {
-                if ((map.tiles[this.currentI, this.currentJ - 1].tileID == 1 || map.tiles[this.currentI, this.currentJ - 1].tileID == 2) && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
+                if (this.currentJ - 1 >= 0 && map.tiles[this.currentI, this.currentJ - 1].tileID == 1 && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
                     this.dir.X = 0;
                     this.dir.Y = -1;
                     this.rotation = (float)Math.PI + (float)Math.PI / 2;
                 }
             }
             if (kstate.IsKeyDown(Keys.Down) || kstate.IsKeyDown(Keys.S)) {
-                if ((map.tiles[this.currentI, this.currentJ + 1].tileID == 1 || map.tiles[this.currentI, this.currentJ + 1].tileID == 2) && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
+                if (this.currentJ + 1 <= 35 && map.tiles[this.currentI, this.currentJ + 1].tileID == 1 && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
                     this.dir.X = 0;
                     this.dir.Y = 1;
                     this.rotation = (float)Math.PI / 2;
                 }
             }
             if (kstate.IsKeyDown(Keys.Left) || kstate.IsKeyDown(Keys.A)) {
-                if ((map.tiles[this.currentI - 1, this.currentJ].tileID == 1 || map.tiles[this.currentI - 1, this.currentJ].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
+                if (this.currentI - 1 >= 0 && map.tiles[this.currentI - 1, this.currentJ].tileID == 1 && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
                     this.dir.X = -1;
                     this.dir.Y = 0;
                     this.rotation = (float)Math.PI;
                 }
             }
             if (kstate.IsKeyDown(Keys.Right) || kstate.IsKeyDown(Keys.D)) {
-                if ((map.tiles[this.currentI + 1, this.currentJ].tileID == 1 || map.tiles[this.currentI + 1, this.currentJ].tileID == 2) && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
+                if (this.currentI + 1 <= 27 && map.tiles[this.currentI + 1, this.currentJ].tileID == 1 && this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2) {
                     this.dir.X = 1;
                     this.dir.Y = 0;
                     this.rotation = 0;

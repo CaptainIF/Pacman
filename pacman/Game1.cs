@@ -28,6 +28,7 @@ namespace pacman {
         public static bool gameFinished;
         public static bool gameOver;
         public static bool rageMode = false;
+        public static bool ghostAlive = true;
 
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
@@ -92,13 +93,19 @@ namespace pacman {
 
             // TODO: Add your update logic here
             if(!gameFinished && !gameOver) {
-                spöke.Update(map, torsten);
+                if(ghostAlive) {
+                    spöke.Update(map, torsten);
+                }
                 torsten.Update(map);
             }
             
 
             if ((torsten.currentI == spöke.currentI) && (torsten.currentJ == spöke.currentJ)) {
-                gameOver = true;
+                if(rageMode) {
+                    ghostAlive = false;
+                } else {
+                    gameOver = true;
+                }
             }
 
 
