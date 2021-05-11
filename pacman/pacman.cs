@@ -95,7 +95,7 @@ namespace pacman {
                 }
             }
             if (kstate.IsKeyDown(Keys.Down) || kstate.IsKeyDown(Keys.S)) {
-                if (this.currentJ + 1 <= 27 && map.tiles[this.currentI, this.currentJ + 1].tileID == 1 && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
+                if (this.currentJ + 1 <= 35 && map.tiles[this.currentI, this.currentJ + 1].tileID == 1 && this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) {
                     this.dir.X = 0;
                     this.dir.Y = 1;
                     this.rotation = (float)Math.PI / 2;

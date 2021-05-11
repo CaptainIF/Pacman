@@ -26,6 +26,10 @@ namespace pacman {
             this.dir.Y = 0;
         }
 
+        public void ghostDied() {
+
+        }
+
         public void Update(gameMap map, pacman torsten) {
             this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
             this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
