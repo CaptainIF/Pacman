@@ -19,6 +19,18 @@
 /processorParam:Quality=Best
 /build:chomp.mp3
 
+#begin fearghost.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:fearghost.png
+
 #begin PACMAN_intro.wav
 /importer:WavImporter
 /processor:SongProcessor
@@ -32,7 +44,7 @@
 /processorParam:TextureFormat=Compressed
 /build:scoreFont.spritefont
 
-#begin spöke_1.png
+#begin Spöketrans.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -42,7 +54,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:spöke_1.png
+/build:Spöketrans.png;Spöke_1.png
 
 #begin spriteMap_pacman.png
 /importer:TextureImporter
