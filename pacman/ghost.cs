@@ -33,7 +33,14 @@ namespace pacman {
             var neighbour = map.tiles[currentI, currentJ].CheckNeighbours(map);
             List<tile> nextNeighbour = map.tiles[currentI, currentJ].CheckWheyNeighbours(map);
 
-
+            if ((int)((this.pos.X + (this.dir.X * 14)) / 28) < 0) {
+                this.currentI = 27;
+                this.pos.X = currentI * 28;
+            }
+            else if ((int)((this.pos.X + (this.dir.X * 14)) / 28) > 27) {
+                this.currentI = 0;
+                this.pos.X = currentI * 28;
+            }
 
             if (neighbour.Count == 2) {
 
@@ -44,35 +51,26 @@ namespace pacman {
                 }
 
                 else {
-                    Debug.WriteLine("hello");
                     this.pos.X = this.currentI * 28 + 14;
                     this.pos.Y = this.currentJ * 28 + 14;
 
                     if (map.tiles[this.currentI, this.currentJ + 1].tileID == 0 && (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && this.dir.X != 0) {
                         this.dir.X = 0;
                         this.dir.Y = -1;
-
-                        Debug.WriteLine("UP");
                     }
                     else if (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 && (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && this.dir.X != 0) {
                         this.dir.X = 0;
                         this.dir.Y = 1;
-
-                        Debug.WriteLine("DOWN");
 
                     }
                     else if (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
                         this.dir.X = -1;
                         this.dir.Y = 0;
 
-                        Debug.WriteLine("LEFT");
-
                     }
                     else if (map.tiles[this.currentI - 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
                         this.dir.X = 1;
                         this.dir.Y = 0;
-
-                        Debug.WriteLine("RIGHT");
 
                     }
 
@@ -80,7 +78,8 @@ namespace pacman {
 
 
 
-            } else if (neighbour.Count == 1 && ((this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) || (this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2))) {
+            } else if (neighbour.Count == 1 && ((this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2) 
+                && (this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2))) {
                 
                 if (this.dir.X == -1) {
                     if (map.tiles[currentI, currentJ + 1].tileID == 0) {
