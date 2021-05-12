@@ -31,13 +31,12 @@ namespace pacman {
             this.dir.X = -1;
             this.dir.Y = 0;
 
-            this.homePos = new Vector2(364, 476);
+            this.homePos = new Vector2(378, 476);
         }
 
         public void ghostDied() {
             mode = "dead";
             homeAngle = Math.Atan((homePos.Y - pos.Y) / (homePos.X - pos.X));
-            Debug.WriteLine("test");
         }
 
         public void Update(gameMap map, pacman torsten) {
@@ -83,7 +82,6 @@ namespace pacman {
                 } else if (neighbour.Count == 1 && ((this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2)
                     && (this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2))) {
 
-                    Debug.WriteLine("hello4");
                     if (this.dir.X == -1) {
                         if (map.tiles[currentI, currentJ + 1].tileID == 0) {
                             this.tileOne = nextNeighbour[0];
@@ -357,10 +355,8 @@ namespace pacman {
                         this.pos.Y += this.dir.Y * this.speed;
                     }
                 } else {
-                    Debug.WriteLine("hello2");
                     if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
                         || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
-                        Debug.WriteLine("hello3");
                         this.pos.X += this.dir.X * this.speed;
                         this.pos.Y += this.dir.Y * this.speed;
                     }
@@ -370,8 +366,8 @@ namespace pacman {
             } else if (mode == "scatter") {
 
             } else if (mode == "dead") {
-                this.pos.X += (float)Math.Cos(homeAngle) * (float)homeSpeed;
-                this.pos.Y += (float)Math.Sin(homeAngle) * (float)homeSpeed;
+                this.pos.X += (float)Math.Cos(homeAngle) * (float)-homeSpeed;
+                this.pos.Y += (float)Math.Sin(homeAngle) * (float)-homeSpeed;
             }
         }
 

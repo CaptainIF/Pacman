@@ -39,6 +39,11 @@ namespace pacman {
             Window.ClientSizeChanged += OnResize;
         }
 
+        public void startRage() {
+            rageMode = true;
+            spöke.mode = "frightened";
+        }
+
         public void OnResize(Object sender, EventArgs e) {
             if(width != GraphicsDevice.PresentationParameters.BackBufferWidth) {
                 width = GraphicsDevice.PresentationParameters.BackBufferWidth;
@@ -73,8 +78,8 @@ namespace pacman {
 
             spriteMap = Content.Load<Texture2D>("spriteMap_pacman");
 
-            torsten = new pacman(this, 13, 26, 2, spriteMap);
             spöke = new ghost(this, 13, 14, 2, map);
+            torsten = new pacman(this, 13, 26, 2, spöke, spriteMap);
 
             map = new gameMap(this, 28, 36, spriteMap);
             map.InitializeWalls();

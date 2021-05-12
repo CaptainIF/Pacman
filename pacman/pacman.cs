@@ -23,14 +23,16 @@ namespace pacman {
         public float rotation = 0;
         public SoundEffect chomp;
         public SoundEffectInstance chompInstance;
+        public ghost spöke;
 
-        public pacman(Game game, int i, int j, int speed, Texture2D spriteMap) : base(game) {
+        public pacman(Game game, int i, int j, int speed, ghost spöke, Texture2D spriteMap) : base(game) {
             this.pos.X = i * 28 + 28 / 2;
             this.pos.Y = j * 28 + 28 / 2;
             this.dir.X = 0;
             this.dir.Y = 0;
             this.speed = speed;
             this.spriteMap = spriteMap;
+            this.spöke = spöke;
             chomp = Game.Content.Load<SoundEffect>("chomp");
             chompInstance = chomp.CreateInstance();
             chompInstance.Volume = 0.1f;
@@ -83,6 +85,8 @@ namespace pacman {
                 map.tiles[currentI, currentJ].metadata = 0;
                 map.tiles[currentI, currentJ].Init();
                 Game1.rageMode = true;
+                this.spöke.mode = "frightened";
+                this.spöke.speed = 1;
             }
 
             var kstate = Keyboard.GetState();
