@@ -74,7 +74,7 @@ namespace pacman {
             spriteMap = Content.Load<Texture2D>("spriteMap_pacman");
 
             torsten = new pacman(this, 13, 26, 2, spriteMap);
-            spöke = new ghost(this, 13, 14, 2);
+            spöke = new ghost(this, 13, 14, 2, map);
 
             map = new gameMap(this, 28, 36, spriteMap);
             map.InitializeWalls();
@@ -93,16 +93,14 @@ namespace pacman {
 
             // TODO: Add your update logic here
             if(!gameFinished && !gameOver) {
-                if(ghostAlive) {
-                    spöke.Update(map, torsten);
-                }
+                spöke.Update(map, torsten);
                 torsten.Update(map);
             }
             
 
             if ((torsten.currentI == spöke.currentI) && (torsten.currentJ == spöke.currentJ)) {
                 if(rageMode) {
-                    ghostAlive = false;
+                    spöke.ghostDied();
                 } else {
                     gameOver = true;
                 }

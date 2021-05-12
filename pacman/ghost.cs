@@ -14,293 +14,282 @@ namespace pacman {
         public int width = 50;
         public int currentI, currentJ;
         public Texture2D texture;
+        public Vector2 homePos;
+        public double homeAngle;
+        public double homeSpeed;
         public tile tileOne;
         public tile tileTwo;
         public tile tileThree;
+        public string mode = "chase";
 
-        public ghost(Game game, int i, int j,int speed):base(game) {
+        public ghost(Game game, int i, int j,int speed, gameMap map):base(game) {
 
             this.speed = speed;
+            this.homeSpeed = 1;
             this.pos.X = i * 28 + 14;
             this.pos.Y = j * 28 + 14;
             this.dir.X = -1;
             this.dir.Y = 0;
+
+            this.homePos = new Vector2(364, 476);
         }
 
         public void ghostDied() {
-
+            mode = "dead";
+            homeAngle = Math.Atan((homePos.Y - pos.Y) / (homePos.X - pos.X));
+            Debug.WriteLine("test");
         }
 
         public void Update(gameMap map, pacman torsten) {
-            this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
-            this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
-            var kstate = Keyboard.GetState();
-            var neighbour = map.tiles[currentI, currentJ].CheckNeighbours(map);
-            List<tile> nextNeighbour = map.tiles[currentI, currentJ].CheckWheyNeighbours(map);
+            if (mode == "chase") {
 
-            if ((int)((this.pos.X + (this.dir.X * 14)) / 28) < 0) {
-                this.currentI = 27;
-                this.pos.X = currentI * 28;
-            }
-            else if ((int)((this.pos.X + (this.dir.X * 14)) / 28) > 27) {
-                this.currentI = 0;
-                this.pos.X = currentI * 28;
-            }
+                this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
+                this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
+                var kstate = Keyboard.GetState();
+                var neighbour = map.tiles[currentI, currentJ].CheckNeighbours(map);
+                List<tile> nextNeighbour = map.tiles[currentI, currentJ].CheckWheyNeighbours(map);
 
-            if (neighbour.Count == 2) {
-
-                if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
-                    || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
-                    this.pos.X += this.dir.X * this.speed;
-                    this.pos.Y += this.dir.Y * this.speed;
+                if ((int)((this.pos.X + (this.dir.X * 14)) / 28) < 0) {
+                    this.currentI = 27;
+                    this.pos.X = currentI * 28;
+                } else if ((int)((this.pos.X + (this.dir.X * 14)) / 28) > 27) {
+                    this.currentI = 0;
+                    this.pos.X = currentI * 28;
                 }
 
-                else {
-                    this.pos.X = this.currentI * 28 + 14;
-                    this.pos.Y = this.currentJ * 28 + 14;
+                if (neighbour.Count == 2) {
 
-                    if (map.tiles[this.currentI, this.currentJ + 1].tileID == 0 && (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && this.dir.X != 0) {
-                        this.dir.X = 0;
-                        this.dir.Y = -1;
-                    }
-                    else if (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 && (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && this.dir.X != 0) {
-                        this.dir.X = 0;
-                        this.dir.Y = 1;
-                    }
-                    else if (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
-                        this.dir.X = -1;
-                        this.dir.Y = 0;
-                    }
-                    else if (map.tiles[this.currentI - 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
-                        this.dir.X = 1;
-                        this.dir.Y = 0;
-                    }
+                    if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
+                        || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
+                        this.pos.X += this.dir.X * this.speed;
+                        this.pos.Y += this.dir.Y * this.speed;
+                    } else {
+                        this.pos.X = this.currentI * 28 + 14;
+                        this.pos.Y = this.currentJ * 28 + 14;
 
-                }
-
-
-
-            }
-            else if (neighbour.Count == 1 && ((this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2)
-              && (this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2))) {
-
-                if (this.dir.X == -1) {
-                    if (map.tiles[currentI, currentJ + 1].tileID == 0) {
-                        this.tileOne = nextNeighbour[0];
-                        this.tileTwo = nextNeighbour[2];
-
-                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-
-                        if (pathOne > pathTwo) {
-                            this.dir.Y = 0;
-                            this.dir.X = -1;
-                        }
-                        else {
+                        if (map.tiles[this.currentI, this.currentJ + 1].tileID == 0 && (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && this.dir.X != 0) {
+                            this.dir.X = 0;
                             this.dir.Y = -1;
+                        } else if (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 && (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && this.dir.X != 0) {
                             this.dir.X = 0;
-                        }
-                    }
-                    else if (map.tiles[currentI - 1, currentJ].tileID == 0) {
-                        this.tileOne = nextNeighbour[0];
-                        this.tileTwo = nextNeighbour[2];
-
-                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-
-                        if (pathOne > pathTwo) {
                             this.dir.Y = 1;
-                            this.dir.X = 0;
-                        }
-                        else {
-                            this.dir.Y = -1;
-                            this.dir.X = 0;
-                        }
-                    }
-                    else if (map.tiles[currentI, currentJ - 1].tileID == 0) {
-                        this.tileOne = nextNeighbour[1];
-                        this.tileTwo = nextNeighbour[2];
-
-                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-
-                        if (pathOne > pathTwo) {
-                            this.dir.Y = 0;
+                        } else if (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
                             this.dir.X = -1;
-                        }
-                        else {
-                            this.dir.Y = 1;
-                            this.dir.X = 0;
-                        }
-                    }
-                }
-                else if (this.dir.X == 1) {
-                    if (map.tiles[currentI, currentJ + 1].tileID == 0) {
-                        this.tileOne = nextNeighbour[0];
-                        this.tileTwo = nextNeighbour[1];
-
-                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-
-                        if (pathOne > pathTwo) {
                             this.dir.Y = 0;
+                        } else if (map.tiles[this.currentI - 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
                             this.dir.X = 1;
+                            this.dir.Y = 0;
                         }
-                        else {
-                            this.dir.Y = -1;
-                            this.dir.X = 0;
+
+                    }
+
+
+
+                } else if (neighbour.Count == 1 && ((this.pos.X % 28 < 14 + this.speed / 2 && this.pos.X % 28 > 14 - this.speed / 2)
+                    && (this.pos.Y % 28 < 14 + this.speed / 2 && this.pos.Y % 28 > 14 - this.speed / 2))) {
+
+                    if (this.dir.X == -1) {
+                        if (map.tiles[currentI, currentJ + 1].tileID == 0) {
+                            this.tileOne = nextNeighbour[0];
+                            this.tileTwo = nextNeighbour[2];
+
+                            double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                            if (pathOne > pathTwo) {
+                                this.dir.Y = 0;
+                                this.dir.X = -1;
+                            } else {
+                                this.dir.Y = -1;
+                                this.dir.X = 0;
+                            }
+                        } else if (map.tiles[currentI - 1, currentJ].tileID == 0) {
+                            this.tileOne = nextNeighbour[0];
+                            this.tileTwo = nextNeighbour[2];
+
+                            double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                            if (pathOne > pathTwo) {
+                                this.dir.Y = 1;
+                                this.dir.X = 0;
+                            } else {
+                                this.dir.Y = -1;
+                                this.dir.X = 0;
+                            }
+                        } else if (map.tiles[currentI, currentJ - 1].tileID == 0) {
+                            this.tileOne = nextNeighbour[1];
+                            this.tileTwo = nextNeighbour[2];
+
+                            double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                            if (pathOne > pathTwo) {
+                                this.dir.Y = 0;
+                                this.dir.X = -1;
+                            } else {
+                                this.dir.Y = 1;
+                                this.dir.X = 0;
+                            }
+                        }
+                    } else if (this.dir.X == 1) {
+                        if (map.tiles[currentI, currentJ + 1].tileID == 0) {
+                            this.tileOne = nextNeighbour[0];
+                            this.tileTwo = nextNeighbour[1];
+
+                            double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                            if (pathOne > pathTwo) {
+                                this.dir.Y = 0;
+                                this.dir.X = 1;
+                            } else {
+                                this.dir.Y = -1;
+                                this.dir.X = 0;
+                            }
+                        } else if (map.tiles[currentI + 1, currentJ].tileID == 0) {
+                            this.tileOne = nextNeighbour[0];
+                            this.tileTwo = nextNeighbour[1];
+
+                            double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                            if (pathOne > pathTwo) {
+                                this.dir.Y = 1;
+                                this.dir.X = 0;
+                            } else {
+                                this.dir.Y = -1;
+                                this.dir.X = 0;
+                            }
+                        } else if (map.tiles[currentI, currentJ - 1].tileID == 0) {
+                            this.tileOne = nextNeighbour[0];
+                            this.tileTwo = nextNeighbour[1];
+
+                            double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                            if (pathOne > pathTwo) {
+                                this.dir.Y = 1;
+                                this.dir.X = 0;
+                            } else {
+                                this.dir.Y = 0;
+                                this.dir.X = 1;
+                            }
+                        }
+                    } else if (this.dir.Y == -1) {
+                        if (map.tiles[currentI - 1, currentJ].tileID == 0) {
+                            this.tileOne = nextNeighbour[0];
+                            this.tileTwo = nextNeighbour[1];
+
+                            double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                            if (pathOne > pathTwo) {
+                                this.dir.Y = 0;
+                                this.dir.X = 1;
+                            } else {
+                                this.dir.Y = -1;
+                                this.dir.X = 0;
+                            }
+                        } else if (map.tiles[currentI + 1, currentJ].tileID == 0) {
+                            this.tileOne = nextNeighbour[0];
+                            this.tileTwo = nextNeighbour[2];
+
+                            double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                            if (pathOne > pathTwo) {
+                                this.dir.Y = 0;
+                                this.dir.X = -1;
+                            } else {
+                                this.dir.Y = -1;
+                                this.dir.X = 0;
+                            }
+                        } else if (map.tiles[currentI, currentJ - 1].tileID == 0) {
+                            this.tileOne = nextNeighbour[0];
+                            this.tileTwo = nextNeighbour[2];
+
+                            double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                            if (pathOne > pathTwo) {
+                                this.dir.Y = 0;
+                                this.dir.X = -1;
+                            } else {
+                                this.dir.Y = 0;
+                                this.dir.X = 1;
+                            }
+                        }
+                    } else if (this.dir.Y == 1) {
+                        if (map.tiles[currentI - 1, currentJ].tileID == 0) {
+                            this.tileOne = nextNeighbour[1];
+                            this.tileTwo = nextNeighbour[2];
+
+                            double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                            if (pathOne > pathTwo) {
+                                this.dir.Y = 1;
+                                this.dir.X = 0;
+                            } else {
+                                this.dir.Y = 0;
+                                this.dir.X = 1;
+                            }
+                        } else if (map.tiles[currentI + 1, currentJ].tileID == 0) {
+                            this.tileOne = nextNeighbour[1];
+                            this.tileTwo = nextNeighbour[2];
+
+                            double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                            if (pathOne > pathTwo) {
+                                this.dir.Y = 0;
+                                this.dir.X = -1;
+                            } else {
+                                this.dir.Y = 1;
+                                this.dir.X = 0;
+                            }
+                        } else if (map.tiles[currentI, currentJ + 1].tileID == 0) {
+                            this.tileOne = nextNeighbour[1];
+                            this.tileTwo = nextNeighbour[2];
+
+                            double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+
+                            if (pathOne > pathTwo) {
+                                this.dir.Y = 0;
+                                this.dir.X = -1;
+                            } else {
+                                this.dir.Y = 0;
+                                this.dir.X = 1;
+                            }
                         }
                     }
-                    else if (map.tiles[currentI + 1, currentJ].tileID == 0) {
+
+                    if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
+                        || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
+                        this.pos.X += this.dir.X * this.speed;
+                        this.pos.Y += this.dir.Y * this.speed;
+                    }
+
+                } else if (neighbour.Count == 0) {
+                    if (this.dir.X == -1) {
                         this.tileOne = nextNeighbour[0];
-                        this.tileTwo = nextNeighbour[1];
-
-                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-
-                        if (pathOne > pathTwo) {
-                            this.dir.Y = 1;
-                            this.dir.X = 0;
-                        }
-                        else {
-                            this.dir.Y = -1;
-                            this.dir.X = 0;
-                        }
                     }
-                    else if (map.tiles[currentI, currentJ - 1].tileID == 0) {
-                        this.tileOne = nextNeighbour[0];
-                        this.tileTwo = nextNeighbour[1];
-
-                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-
-                        if (pathOne > pathTwo) {
-                            this.dir.Y = 1;
-                            this.dir.X = 0;
-                        }
-                        else {
-                            this.dir.Y = 0;
-                            this.dir.X = 1;
-                        }
+                } else {
+                    if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
+                        || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
+                        this.pos.X += this.dir.X * this.speed;
+                        this.pos.Y += this.dir.Y * this.speed;
                     }
                 }
-                else if (this.dir.Y == -1) {
-                    if (map.tiles[currentI - 1, currentJ].tileID == 0) {
-                        this.tileOne = nextNeighbour[0];
-                        this.tileTwo = nextNeighbour[1];
+            } else if(mode == "frightened") {
 
-                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+            } else if(mode == "scatter") {
 
-                        if (pathOne > pathTwo) {
-                            this.dir.Y = 0;
-                            this.dir.X = 1;
-                        }
-                        else {
-                            this.dir.Y = -1;
-                            this.dir.X = 0;
-                        }
-                    }
-                    else if (map.tiles[currentI + 1, currentJ].tileID == 0) {
-                        this.tileOne = nextNeighbour[0];
-                        this.tileTwo = nextNeighbour[2];
-
-                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-
-                        if (pathOne > pathTwo) {
-                            this.dir.Y = 0;
-                            this.dir.X = -1;
-                        }
-                        else {
-                            this.dir.Y = -1;
-                            this.dir.X = 0;
-                        }
-                    }
-                    else if (map.tiles[currentI, currentJ - 1].tileID == 0) {
-                        this.tileOne = nextNeighbour[0];
-                        this.tileTwo = nextNeighbour[2];
-
-                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-
-                        if (pathOne > pathTwo) {
-                            this.dir.Y = 0;
-                            this.dir.X = -1;
-                        }
-                        else {
-                            this.dir.Y = 0;
-                            this.dir.X = 1;
-                        }
-                    }
-                }
-                else if (this.dir.Y == 1) {
-                    if (map.tiles[currentI - 1, currentJ].tileID == 0) {
-                        this.tileOne = nextNeighbour[1];
-                        this.tileTwo = nextNeighbour[2];
-
-                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-
-                        if (pathOne > pathTwo) {
-                            this.dir.Y = 1;
-                            this.dir.X = 0;
-                        }
-                        else {
-                            this.dir.Y = 0;
-                            this.dir.X = 1;
-                        }
-                    }
-                    else if (map.tiles[currentI + 1, currentJ].tileID == 0) {
-                        this.tileOne = nextNeighbour[1];
-                        this.tileTwo = nextNeighbour[2];
-
-                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-
-                        if (pathOne > pathTwo) {
-                            this.dir.Y = 0;
-                            this.dir.X = -1;
-                        }
-                        else {
-                            this.dir.Y = 1;
-                            this.dir.X = 0;
-                        }
-                    }
-                    else if (map.tiles[currentI, currentJ + 1].tileID == 0) {
-                        this.tileOne = nextNeighbour[1];
-                        this.tileTwo = nextNeighbour[2];
-
-                        double pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        double pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-
-                        if (pathOne > pathTwo) {
-                            this.dir.Y = 0;
-                            this.dir.X = -1;
-                        }
-                        else {
-                            this.dir.Y = 0;
-                            this.dir.X = 1;
-                        }
-                    }
-                }
-
-                if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
-                    || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
-                    this.pos.X += this.dir.X * this.speed;
-                    this.pos.Y += this.dir.Y * this.speed;
-                }
-
-            } else if (neighbour.Count == 0) {
-                if(this.dir.X == -1) {
-                    this.tileOne = nextNeighbour[0];
-                }
-            } else {
-                if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
-                    || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
-                    this.pos.X += this.dir.X * this.speed;
-                    this.pos.Y += this.dir.Y * this.speed;
-                }
+            } else if(mode == "dead") {
+                this.pos.X += (float)Math.Cos(homeAngle) * (float)homeSpeed;
+                this.pos.Y += (float)Math.Sin(homeAngle) * (float)homeSpeed;
             }
         }
 
