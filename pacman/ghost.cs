@@ -31,12 +31,20 @@ namespace pacman {
             this.dir.X = -1;
             this.dir.Y = 0;
 
-            this.homePos = new Vector2(378, 476);
+            this.homePos = new Vector2(392, 490);
         }
 
         public void ghostDied() {
             mode = "dead";
             homeAngle = Math.Atan((homePos.Y - pos.Y) / (homePos.X - pos.X));
+
+            if(homePos.X - pos.X > 0) {
+                this.dir.X = 1;
+                this.dir.Y = 1;
+            } else {
+                this.dir.X = -1;
+                this.dir.Y = -1;
+            }
         }
 
         public void updateDir(gameMap map, pacman torsten) {
@@ -805,10 +813,23 @@ namespace pacman {
 
                 }
 
-            }
-            else if (mode == "dead") {
-                this.pos.X += (float)Math.Cos(homeAngle) * (float)-homeSpeed;
-                this.pos.Y += (float)Math.Sin(homeAngle) * (float)-homeSpeed;
+            } else if (mode == "dead") {
+                this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
+                this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
+
+                this.pos.X += (float)Math.Cos(homeAngle) * (float)homeSpeed * this.dir.X;
+                this.pos.Y += (float)Math.Sin(homeAngle) * (float)homeSpeed * this.dir.Y;
+
+                if (this.homePos.X - 1 < this.pos.X && this.homePos.X + 1 > this.pos.X && this.homePos.Y - 1 < this.pos.Y && this.homePos.Y + 1 > this.pos.Y) this.mode = "reviving";
+            } else if (mode == "reviving") {
+                this.pos.Y -= 1;
+
+                this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
+                this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
+                if(map.tiles[this.currentI, this.currentJ].tileID == 1 && this.pos.Y % 28 < 14 + Math.Ceiling((double)this.speed / 2) && this.pos.Y % 28 > 14 - Math.Ceiling((double)this.speed / 2)) {
+                    Debug.WriteLine(this.currentI + ", " + this.currentJ);
+                    this.mode = "chase";
+                }
             }
 
         }

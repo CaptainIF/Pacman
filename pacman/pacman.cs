@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Timers;
 
 namespace pacman {
     class pacman : DrawableGameComponent {
@@ -24,6 +25,7 @@ namespace pacman {
         public SoundEffect chomp;
         public SoundEffectInstance chompInstance;
         public ghost spöke;
+        public Timer rageTimer;
 
         public pacman(Game game, int i, int j, int speed, ghost spöke, Texture2D spriteMap) : base(game) {
             this.pos.X = i * 28 + 28 / 2;
@@ -64,6 +66,15 @@ namespace pacman {
             pacmanTextures[3].SetData(data);
         }
 
+        private void OnTimedEvent(Object source, ElapsedEventArgs e) {
+            Game1.rageMode = false;
+            if(this.spöke.mode != "dead") {
+                this.spöke.mode = "chase";
+            }
+            this.spöke.speed = 2;
+            rageTimer.Stop();
+        }
+
         public void Update(gameMap map) {
             this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
             this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
@@ -87,6 +98,10 @@ namespace pacman {
                 Game1.rageMode = true;
                 this.spöke.mode = "frightened";
                 this.spöke.speed = 1;
+                rageTimer = new Timer();
+                rageTimer.Interval = 8000;
+                rageTimer.Elapsed += OnTimedEvent;
+                rageTimer.Start();
             }
 
             var kstate = Keyboard.GetState();
