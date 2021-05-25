@@ -73,6 +73,7 @@ namespace pacman {
             }
             this.spöke.speed = 2;
             rageTimer.Stop();
+            this.spöke.stateTimer.Start();
         }
 
         public void Update(gameMap map) {
@@ -98,6 +99,8 @@ namespace pacman {
                 Game1.rageMode = true;
                 this.spöke.mode = "frightened";
                 this.spöke.speed = 1;
+                this.spöke.stateTimer.Stop();
+                this.spöke.stateTimer.Interval = this.spöke.ghostStateDuration[this.spöke.stateCounter] - this.spöke.stateTimer.Interval;
                 rageTimer = new Timer();
                 rageTimer.Interval = 8000;
                 rageTimer.Elapsed += OnTimedEvent;

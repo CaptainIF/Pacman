@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using System.Timers;
 
 namespace pacman {
     class ghost : DrawableGameComponent {
@@ -21,9 +22,11 @@ namespace pacman {
         public tile tileTwo;
         public tile tileThree;
         public string mode = "scatter";
+        public Timer stateTimer;
+        public int[] ghostStateDuration = new int[7] { 7, 20, 7, 20, 5, 20, 5 };
+        public int stateCounter = 0;
 
         public ghost(Game game, int i, int j, int speed, gameMap map) : base(game) {
-
             this.speed = speed;
             this.homeSpeed = 1;
             this.pos.X = i * 28 + 14;
@@ -32,6 +35,28 @@ namespace pacman {
             this.dir.Y = 0;
 
             this.homePos = new Vector2(392, 490);
+            stateTimer = new Timer();
+            stateTimer.Interval = ghostStateDuration[stateCounter] * 1000;
+            stateTimer.Elapsed += stateChange;
+            stateCounter++;
+            stateTimer.Start();
+        }
+
+        private void stateChange(Object source, ElapsedEventArgs e) {
+            Debug.WriteLine(mode);
+            stateTimer.Stop();
+            if (stateCounter > ghostStateDuration.Length) {
+                mode = "chase";
+            } else {
+                if (stateCounter % 2 == 0) {
+                    mode = "scatter";
+                } else {
+                    mode = "chase";
+                }
+                stateTimer.Interval = ghostStateDuration[stateCounter] * 1000;
+                stateCounter++;
+                stateTimer.Start();
+            }
         }
 
         public void ghostDied() {
@@ -805,7 +830,6 @@ namespace pacman {
 
 
                 updateScatter(map, torsten);
-                Debug.WriteLine(this.dir.X + ", " + this.dir.Y);
                 if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
                 || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
                     this.pos.X += this.dir.X * this.speed;
