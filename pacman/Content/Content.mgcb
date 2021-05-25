@@ -31,6 +31,13 @@
 /processorParam:TextureFormat=Color
 /build:fearghost.png
 
+#begin menuFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:menuFont.spritefont
+
 #begin PACMAN_intro.wav
 /importer:WavImporter
 /processor:SongProcessor

@@ -20,7 +20,9 @@ namespace pacman {
         ghost spöke;
         Song pacsong;
         SpriteFont scoreFont;
+        SpriteFont menuFont;
         Texture2D spriteMap;
+        public string gameState = "menu";
 
         public static int score = 0;
         public static int scoreCount = 0;
@@ -88,6 +90,7 @@ namespace pacman {
             MediaPlayer.Play(this.pacsong);
 
             scoreFont = Content.Load<SpriteFont>("scoreFont");
+            menuFont = Content.Load<SpriteFont>("menuFont");
             // TODO: use this.Content to load your game content here
         }
 
@@ -97,6 +100,8 @@ namespace pacman {
             
 
             // TODO: Add your update logic here
+            if(gameState == "playing") {
+
             if(!gameFinished && !gameOver) {
                 spöke.Update(map, torsten);
                 torsten.Update(map);
@@ -117,16 +122,19 @@ namespace pacman {
             }     
 
             base.Update(gameTime);
+            }
         }
 
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
+
+            if(gameState == "playing") {
             map.Draw(gameTime);
             spöke.Draw(gameTime);
             torsten.Draw(gameTime);
-
+            
             sb.Begin();
             sb.DrawString(scoreFont, "Score: " + score.ToString(), new Vector2((int)Math.Round(620 * scaling), (int)Math.Round(960 * scaling)), Color.White);
             if(gameFinished) {
@@ -140,6 +148,14 @@ namespace pacman {
             }
             sb.End();
             base.Draw(gameTime);
+            } else if(gameState == "menu") {
+                sb.Begin();
+                sb.DrawString(menuFont, "PACMAN", new Vector2(340, 50), Color.Yellow);
+                sb.DrawString(menuFont, "START GAME", new Vector2(310, 150), Color.Red);
+                sb.End();
+                base.Draw(gameTime);
+            }
+
         }
     }
 }

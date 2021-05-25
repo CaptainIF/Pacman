@@ -20,7 +20,7 @@ namespace pacman {
         public tile tileOne;
         public tile tileTwo;
         public tile tileThree;
-        public string mode = "scatter";
+        public string mode = "chase";
 
         public ghost(Game game, int i, int j, int speed, gameMap map) : base(game) {
 
@@ -805,7 +805,6 @@ namespace pacman {
 
 
                 updateScatter(map, torsten);
-                Debug.WriteLine(this.dir.X + ", " + this.dir.Y);
                 if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
                 || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
                     this.pos.X += this.dir.X * this.speed;
