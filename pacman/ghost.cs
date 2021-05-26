@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
-using System.Timers;
 
 namespace pacman {
     class ghost : DrawableGameComponent {
@@ -22,7 +21,7 @@ namespace pacman {
         public tile tileTwo;
         public tile tileThree;
         public string mode = "scatter";
-        public Timer stateTimer;
+        public Stopwatch stateTimer;
         public int[] ghostStateDuration = new int[7] { 7, 20, 7, 20, 5, 20, 5 };
         public int stateCounter = 0;
 
@@ -35,28 +34,22 @@ namespace pacman {
             this.dir.Y = 0;
 
             this.homePos = new Vector2(392, 490);
-            stateTimer = new Timer();
-            stateTimer.Interval = ghostStateDuration[stateCounter] * 1000;
-            stateTimer.Elapsed += stateChange;
-            stateCounter++;
+            stateTimer = new Stopwatch();
             stateTimer.Start();
         }
 
-        private void stateChange(Object source, ElapsedEventArgs e) {
+        private void stateChange() {
             Debug.WriteLine(mode);
             stateTimer.Stop();
-            if (stateCounter > ghostStateDuration.Length) {
-                mode = "chase";
+            stateTimer.Reset();
+            stateCounter++;
+            if (stateCounter % 2 == 0) {
+                mode = "scatter";
             } else {
-                if (stateCounter % 2 == 0) {
-                    mode = "scatter";
-                } else {
-                    mode = "chase";
-                }
-                stateTimer.Interval = ghostStateDuration[stateCounter] * 1000;
-                stateCounter++;
-                stateTimer.Start();
+                mode = "chase";
             }
+            stateTimer.Start();
+            
         }
 
         public void ghostDied() {
@@ -480,8 +473,8 @@ namespace pacman {
                     }
                 }
                 else if (this.dir.Y == -1) {
-                    this.tileOne = nextNeighbour[1];
-                    this.tileTwo = nextNeighbour[2];
+                    this.tileOne = nextNeighbour[0];
+                    this.tileTwo = nextNeighbour[1];
                     this.tileThree = nextNeighbour[3];
 
                     double pathOne;
@@ -500,12 +493,12 @@ namespace pacman {
                     }
 
                     if (pathOne < pathTwo && pathOne < pathThree) {
-                        this.dir.X = 1;
-                        this.dir.Y = 0;
-                    }
-                    else if (pathTwo < pathOne && pathTwo < pathThree) {
                         this.dir.X = 0;
                         this.dir.Y = -1;
+                    }
+                    else if (pathTwo < pathOne && pathTwo < pathThree) {
+                        this.dir.X = 1;
+                        this.dir.Y = 0;
                     }
                     else {
                         this.dir.X = -1;
@@ -792,6 +785,13 @@ namespace pacman {
         }
 
         public void Update(gameMap map, pacman torsten) {
+
+            if(stateCounter < ghostStateDuration.Length && stateTimer.ElapsedMilliseconds >= ghostStateDuration[stateCounter] * 1000) {
+                stateChange();
+            } else if(stateTimer.IsRunning && stateCounter >= ghostStateDuration.Length) {
+                stateTimer.Stop();
+            }
+
             if (mode == "chase" || mode == "frightened") {
                 this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
                 this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);

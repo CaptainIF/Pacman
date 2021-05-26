@@ -22,7 +22,7 @@ namespace pacman {
         SpriteFont scoreFont;
         SpriteFont menuFont;
         Texture2D spriteMap;
-        public string gameState = "menu";
+        public string gameState = "playing";
 
         public static int score = 0;
         public static int scoreCount = 0;
@@ -137,15 +137,21 @@ namespace pacman {
             
             sb.Begin();
             sb.DrawString(scoreFont, "Score: " + score.ToString(), new Vector2((int)Math.Round(620 * scaling), (int)Math.Round(960 * scaling)), Color.White);
+            sb.DrawString(scoreFont, spöke.mode, new Vector2(300, 50), Color.White);
+            sb.DrawString(scoreFont, spöke.stateTimer.Elapsed.ToString(), new Vector2(400, 50), Color.White);
+
             if(gameFinished) {
                 sb.DrawString(scoreFont, "You won!!!", new Vector2((int)Math.Round(350 * scaling), (int)Math.Round(50 * scaling)), Color.Yellow);
             }
+
             if (gameOver) {
                 sb.DrawString(scoreFont, "GAME OVER!!!", new Vector2((int)Math.Round(350 * scaling), (int)Math.Round(50 * scaling)), Color.Yellow);
             }
+
             if (rageMode) {
                 sb.DrawString(scoreFont, "Rage!!!", new Vector2(350, 50), Color.Purple);
             }
+
             sb.End();
             base.Draw(gameTime);
             } else if(gameState == "menu") {

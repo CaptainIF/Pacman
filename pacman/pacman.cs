@@ -68,8 +68,10 @@ namespace pacman {
 
         private void OnTimedEvent(Object source, ElapsedEventArgs e) {
             Game1.rageMode = false;
-            if(this.spöke.mode != "dead") {
-                this.spöke.mode = "chase";
+            if (spöke.stateCounter % 2 == 0 && spöke.mode != "dead") {
+                spöke.mode = "scatter";
+            } else {
+                spöke.mode = "chase";
             }
             this.spöke.speed = 2;
             rageTimer.Stop();
@@ -100,7 +102,6 @@ namespace pacman {
                 this.spöke.mode = "frightened";
                 this.spöke.speed = 1;
                 this.spöke.stateTimer.Stop();
-                this.spöke.stateTimer.Interval = this.spöke.ghostStateDuration[this.spöke.stateCounter] - this.spöke.stateTimer.Interval;
                 rageTimer = new Timer();
                 rageTimer.Interval = 8000;
                 rageTimer.Elapsed += OnTimedEvent;
