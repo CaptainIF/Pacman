@@ -87,6 +87,7 @@ namespace pacman {
             map.InitializeWalls();
             torsten.init();
             this.pacsong = Content.Load<Song>("PACMAN_intro");
+            
             MediaPlayer.Play(this.pacsong);
 
             scoreFont = Content.Load<SpriteFont>("scoreFont");
@@ -122,6 +123,8 @@ namespace pacman {
             }     
 
             base.Update(gameTime);
+            } else if(gameState == "menu") {
+                
             }
         }
 

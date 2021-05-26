@@ -480,8 +480,8 @@ namespace pacman {
                     }
                 }
                 else if (this.dir.Y == -1) {
-                    this.tileOne = nextNeighbour[1];
-                    this.tileTwo = nextNeighbour[2];
+                    this.tileOne = nextNeighbour[0];
+                    this.tileTwo = nextNeighbour[1];
                     this.tileThree = nextNeighbour[3];
 
                     double pathOne;
@@ -500,12 +500,12 @@ namespace pacman {
                     }
 
                     if (pathOne < pathTwo && pathOne < pathThree) {
-                        this.dir.X = 1;
-                        this.dir.Y = 0;
-                    }
-                    else if (pathTwo < pathOne && pathTwo < pathThree) {
                         this.dir.X = 0;
                         this.dir.Y = -1;
+                    }
+                    else if (pathTwo < pathOne && pathTwo < pathThree) {
+                        this.dir.X = 1;
+                        this.dir.Y = 0;
                     }
                     else {
                         this.dir.X = -1;
