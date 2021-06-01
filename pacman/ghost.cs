@@ -786,7 +786,8 @@ namespace pacman {
 
         public void Update(gameMap map, pacman torsten) {
 
-            if(stateCounter < ghostStateDuration.Length && stateTimer.ElapsedMilliseconds >= ghostStateDuration[stateCounter] * 1000) {
+            if(stateCounter < ghostStateDuration.Length && stateTimer.ElapsedMilliseconds >= ghostStateDuration[stateCounter] * 1000 && mode != "dead" && mode != "reviving") {
+                Debug.WriteLine("test2");
                 stateChange();
             } else if(stateTimer.IsRunning && stateCounter >= ghostStateDuration.Length) {
                 stateTimer.Stop();
@@ -844,15 +845,21 @@ namespace pacman {
                 this.pos.X += (float)Math.Cos(homeAngle) * (float)homeSpeed * this.dir.X;
                 this.pos.Y += (float)Math.Sin(homeAngle) * (float)homeSpeed * this.dir.Y;
 
-                if (this.homePos.X - 1 < this.pos.X && this.homePos.X + 1 > this.pos.X && this.homePos.Y - 1 < this.pos.Y && this.homePos.Y + 1 > this.pos.Y) this.mode = "reviving";
+                if (this.homePos.X - 1 < this.pos.X && this.homePos.X + 1 > this.pos.X && this.homePos.Y - 1 < this.pos.Y && this.homePos.Y + 1 > this.pos.Y) {
+                    this.mode = "reviving";
+                    Game1.rageMode = false;
+                 }
             } else if (mode == "reviving") {
                 this.pos.Y -= 1;
 
                 this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
                 this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
                 if(map.tiles[this.currentI, this.currentJ].tileID == 1 && this.pos.Y % 28 < 14 + Math.Ceiling((double)this.speed / 2) && this.pos.Y % 28 > 14 - Math.Ceiling((double)this.speed / 2)) {
-                    Debug.WriteLine(this.currentI + ", " + this.currentJ);
                     this.mode = "chase";
+                    this.dir.X = -1;
+                    this.dir.Y = 0;
+                    this.speed = 2;
+                    this.stateTimer.Start();
                 }
             }
 

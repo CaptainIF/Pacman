@@ -67,15 +67,18 @@ namespace pacman {
         }
 
         private void OnTimedEvent(Object source, ElapsedEventArgs e) {
-            Game1.rageMode = false;
-            if (spöke.stateCounter % 2 == 0 && spöke.mode != "dead") {
+            if (spöke.stateCounter % 2 == 0 && spöke.mode != "dead" && spöke.mode != "reviving") {
+                Game1.rageMode = false;
                 spöke.mode = "scatter";
-            } else {
+                this.spöke.speed = 2;
+                this.spöke.stateTimer.Start();
+            } else if(spöke.mode != "dead" && spöke.mode != "reviving") {
+                Game1.rageMode = false;
                 spöke.mode = "chase";
+                this.spöke.speed = 2;
+                this.spöke.stateTimer.Start();
             }
-            this.spöke.speed = 2;
             rageTimer.Stop();
-            this.spöke.stateTimer.Start();
         }
 
         public void Update(gameMap map) {
@@ -98,10 +101,14 @@ namespace pacman {
             } else if(map.tiles[currentI, currentJ].metadata == 3) {
                 map.tiles[currentI, currentJ].metadata = 0;
                 map.tiles[currentI, currentJ].Init();
-                Game1.rageMode = true;
-                this.spöke.mode = "frightened";
-                this.spöke.speed = 1;
-                this.spöke.stateTimer.Stop();
+                if (spöke.mode != "dead" && spöke.mode != "reviving") {
+                    Game1.rageMode = true;
+                    this.spöke.mode = "frightened";
+                    this.spöke.speed = 1;
+                    this.spöke.stateTimer.Stop();
+
+                }
+                Game1.score += 50;
                 rageTimer = new Timer();
                 rageTimer.Interval = 8000;
                 rageTimer.Elapsed += OnTimedEvent;
