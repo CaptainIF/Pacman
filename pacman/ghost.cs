@@ -21,9 +21,12 @@ namespace pacman {
         public tile tileTwo;
         public tile tileThree;
         public string mode = "scatter";
+        public string ghostVer = "pinky";
         public Stopwatch stateTimer;
         public int[] ghostStateDuration = new int[7] { 7, 20, 7, 20, 5, 20, 5 };
         public int stateCounter = 0;
+        public tile targetTile;
+        public Game game;
 
         public ghost(Game game, int i, int j, int speed, gameMap map) : base(game) {
             this.speed = speed;
@@ -32,6 +35,7 @@ namespace pacman {
             this.pos.Y = j * 28 + 14;
             this.dir.X = -1;
             this.dir.Y = 0;
+            this.game = game;
 
             this.homePos = new Vector2(392, 490);
             stateTimer = new Stopwatch();
@@ -69,6 +73,28 @@ namespace pacman {
             var neighbour = map.tiles[currentI, currentJ].CheckNeighbours(map);
             List<tile> nextNeighbour = map.tiles[currentI, currentJ].CheckWheyNeighbours(map);
 
+            if(ghostVer == "blinky") {
+                targetTile = new tile(game, torsten.currentI, torsten.currentJ, 1, texture);
+            } else if(ghostVer == "inky") {
+                
+            } else if(ghostVer == "pinky") {
+                if(torsten.dir.X == 1) {
+                    targetTile = new tile(game, torsten.currentI + 4, torsten.currentJ, 1, texture);
+                } else if(torsten.dir.X == -1) {
+                    targetTile = new tile(game, torsten.currentI - 4, torsten.currentJ, 1, texture);
+                } else if(torsten.dir.Y == 1) {
+                    targetTile = new tile(game, torsten.currentI, torsten.currentJ + 4, 1, texture);
+                } else if(torsten.dir.Y == -1) {
+                    targetTile = new tile(game, torsten.currentI, torsten.currentJ - 4, 1, texture);
+                }
+            } else if(ghostVer == "clyde") {
+
+            }
+
+
+
+
+
             if (neighbour.Count == 2) {
                 if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID != 1) {
                     this.pos.X = this.currentI * 28 + 14;
@@ -102,12 +128,12 @@ namespace pacman {
                         double pathTwo;
 
                         if (this.mode != "frightened") {
-                            pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
                         if (pathOne > pathTwo) {
@@ -127,12 +153,12 @@ namespace pacman {
                         double pathTwo;
 
                         if (this.mode != "frightened") {
-                            pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
                         if (pathOne > pathTwo) {
@@ -152,12 +178,12 @@ namespace pacman {
                         double pathTwo;
 
                         if (this.mode != "frightened") {
-                            pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
                         if (pathOne > pathTwo) {
@@ -179,12 +205,12 @@ namespace pacman {
                         double pathTwo;
 
                         if (this.mode != "frightened") {
-                            pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
                         if (pathOne > pathTwo) {
@@ -204,12 +230,12 @@ namespace pacman {
                         double pathTwo;
 
                         if (this.mode != "frightened") {
-                            pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
                         if (pathOne > pathTwo) {
@@ -229,12 +255,12 @@ namespace pacman {
                         double pathTwo;
 
                         if (this.mode != "frightened") {
-                            pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
                         if (pathOne > pathTwo) {
@@ -256,12 +282,12 @@ namespace pacman {
                         double pathTwo;
 
                         if (this.mode != "frightened") {
-                            pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
                         if (pathOne > pathTwo) {
@@ -281,12 +307,12 @@ namespace pacman {
                         double pathTwo;
 
                         if (this.mode != "frightened") {
-                            pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
                         if (pathOne > pathTwo) {
@@ -306,12 +332,12 @@ namespace pacman {
                         double pathTwo;
 
                         if (this.mode != "frightened") {
-                            pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
                         if (pathOne > pathTwo) {
@@ -334,12 +360,12 @@ namespace pacman {
                         double pathTwo;
 
                         if (this.mode != "frightened") {
-                            pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
                         if (pathOne > pathTwo) {
@@ -359,12 +385,12 @@ namespace pacman {
                         double pathTwo;
 
                         if (this.mode != "frightened") {
-                            pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
                         if (pathOne > pathTwo) {
@@ -384,12 +410,12 @@ namespace pacman {
                         double pathTwo;
 
                         if (this.mode != "frightened") {
-                            pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                            pathTwo = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
+                            pathOne = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
                         if (pathOne > pathTwo) {
@@ -414,14 +440,14 @@ namespace pacman {
                     double pathThree;
 
                     if (this.mode != "frightened") {
-                        pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                        pathThree = pyth((int)this.tileThree.position.X - torsten.currentI, (int)this.tileThree.position.Y - torsten.currentJ);
+                        pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                        pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
+                        pathThree = pyth((int)this.tileThree.position.X - (int)targetTile.position.X, (int)this.tileThree.position.Y - (int)targetTile.position.Y);
                     }
                     else {
-                        pathThree = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                        pathOne = pyth((int)this.tileThree.position.X - torsten.currentI, (int)this.tileThree.position.Y - torsten.currentJ);
+                        pathThree = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                        pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
+                        pathOne = pyth((int)this.tileThree.position.X - (int)targetTile.position.X, (int)this.tileThree.position.Y - (int)targetTile.position.Y);
                     }
 
 
@@ -449,14 +475,14 @@ namespace pacman {
                     double pathThree;
 
                     if (this.mode != "frightened") {
-                        pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                        pathThree = pyth((int)this.tileThree.position.X - torsten.currentI, (int)this.tileThree.position.Y - torsten.currentJ);
+                        pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                        pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
+                        pathThree = pyth((int)this.tileThree.position.X - (int)targetTile.position.X, (int)this.tileThree.position.Y - (int)targetTile.position.Y);
                     }
                     else {
-                        pathThree = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                        pathOne = pyth((int)this.tileThree.position.X - torsten.currentI, (int)this.tileThree.position.Y - torsten.currentJ);
+                        pathThree = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                        pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
+                        pathOne = pyth((int)this.tileThree.position.X - (int)targetTile.position.X, (int)this.tileThree.position.Y - (int)targetTile.position.Y);
                     }
 
                     if (pathOne < pathTwo && pathOne < pathThree) {
@@ -482,14 +508,14 @@ namespace pacman {
                     double pathThree;
 
                     if (this.mode != "frightened") {
-                        pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                        pathThree = pyth((int)this.tileThree.position.X - torsten.currentI, (int)this.tileThree.position.Y - torsten.currentJ);
+                        pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                        pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
+                        pathThree = pyth((int)this.tileThree.position.X - (int)targetTile.position.X, (int)this.tileThree.position.Y - (int)targetTile.position.Y);
                     }
                     else {
-                        pathThree = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                        pathOne = pyth((int)this.tileThree.position.X - torsten.currentI, (int)this.tileThree.position.Y - torsten.currentJ);
+                        pathThree = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                        pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
+                        pathOne = pyth((int)this.tileThree.position.X - (int)targetTile.position.X, (int)this.tileThree.position.Y - (int)targetTile.position.Y);
                     }
 
                     if (pathOne < pathTwo && pathOne < pathThree) {
@@ -515,14 +541,14 @@ namespace pacman {
                     double pathThree;
 
                     if (this.mode != "frightened") {
-                        pathOne = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                        pathThree = pyth((int)this.tileThree.position.X - torsten.currentI, (int)this.tileThree.position.Y - torsten.currentJ);
+                        pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                        pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
+                        pathThree = pyth((int)this.tileThree.position.X - (int)targetTile.position.X, (int)this.tileThree.position.Y - (int)targetTile.position.Y);
                     }
                     else {
-                        pathThree = pyth((int)this.tileOne.position.X - torsten.currentI, (int)this.tileOne.position.Y - torsten.currentJ);
-                        pathTwo = pyth((int)this.tileTwo.position.X - torsten.currentI, (int)this.tileTwo.position.Y - torsten.currentJ);
-                        pathOne = pyth((int)this.tileThree.position.X - torsten.currentI, (int)this.tileThree.position.Y - torsten.currentJ);
+                        pathThree = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                        pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
+                        pathOne = pyth((int)this.tileThree.position.X - (int)targetTile.position.X, (int)this.tileThree.position.Y - (int)targetTile.position.Y);
                     }
 
                     if (pathOne < pathTwo && pathOne < pathThree) {
