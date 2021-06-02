@@ -88,10 +88,28 @@ namespace pacman {
                     targetTile = new tile(game, torsten.currentI, torsten.currentJ - 4, 1, texture);
                 }
             } else if(ghostVer == "clyde") {
+                double pacDist = pyth((int)this.tileOne.position.X - (int)torsten.currentI, (int)this.tileOne.position.Y - (int)torsten.currentJ);
 
+                if(pacDist >= 6) {
+                    targetTile = new tile(game, torsten.currentI, torsten.currentJ, 1, texture);
+                } else {
+                    targetTile = new tile(game, 1, 30, 1, texture);
+                }
             }
 
 
+
+            if(mode == "scatter") {
+                if(ghostVer == "blinky") {
+                    targetTile = new tile(game, 26, 1, 1, texture);
+                } else if(ghostVer == "inky") {
+                    targetTile = new tile(game, 2, 1, 1, texture);
+                } else if(ghostVer == "pinky") {
+                    targetTile = new tile(game, 28, 30, 1, texture);
+                } else if(ghostVer == "clyde") {
+                    targetTile = new tile(game, 1, 30, 1, texture);
+                }
+            }
 
 
 
@@ -568,7 +586,7 @@ namespace pacman {
             }
         }
 
-        public void updateScatter(gameMap map, pacman torsten) {
+        /*public void updateScatter(gameMap map, pacman torsten) {
             var neighbour = map.tiles[currentI, currentJ].CheckNeighbours(map);
             List<tile> nextNeighbour = map.tiles[currentI, currentJ].CheckWheyNeighbours(map);
             Random rand = new Random();
@@ -808,7 +826,7 @@ namespace pacman {
             }
 
 
-        }
+        }*/
 
         public void Update(gameMap map, pacman torsten) {
 
@@ -856,7 +874,7 @@ namespace pacman {
                 }
 
 
-                updateScatter(map, torsten);
+                //updateScatter(map, torsten);
                 if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
                 || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
                     this.pos.X += this.dir.X * this.speed;
