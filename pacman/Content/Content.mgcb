@@ -19,6 +19,18 @@
 /processorParam:Quality=Best
 /build:chomp.mp3
 
+#begin clyde.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:clyde.png
+
 #begin fearghost.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -30,6 +42,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:fearghost.png
+
+#begin inky.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:inky.png
 
 #begin menuFont.spritefont
 /importer:FontDescriptionImporter
@@ -43,6 +67,18 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:PACMAN_intro.wav
+
+#begin pinky.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:pinky.png
 
 #begin scoreFont.spritefont
 /importer:FontDescriptionImporter
