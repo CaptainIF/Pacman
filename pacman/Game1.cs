@@ -17,7 +17,7 @@ namespace pacman {
         static double height = originalHeight;
         static double proportions = height / width;
         pacman torsten;
-        ghost spöke;
+        ghost[] spöken = new ghost[2];
         Song pacsong;
         SpriteFont scoreFont;
         SpriteFont menuFont;
@@ -43,7 +43,9 @@ namespace pacman {
 
         public void startRage() {
             rageMode = true;
-            spöke.mode = "frightened";
+            for(int i = 0;i < spöken.Length;i++) {
+                spöken[i].mode = "frightened";
+            }
         }
 
         public void OnResize(Object sender, EventArgs e) {
@@ -80,8 +82,10 @@ namespace pacman {
 
             spriteMap = Content.Load<Texture2D>("spriteMap_pacman");
 
-            spöke = new ghost(this, 13, 14, 2, map);
-            torsten = new pacman(this, 13, 26, 2, spöke, spriteMap);
+            spöken[0] = new ghost(this, 13, 14, 2, map);
+            spöken[1] = new ghost(this, 16, 14, 2, map);
+            //spöke = new ghost(this, 13, 14, 2, map);
+            torsten = new pacman(this, 13, 26, 2, spöken, spriteMap);
 
             map = new gameMap(this, 28, 36, spriteMap);
             map.InitializeWalls();
@@ -104,21 +108,26 @@ namespace pacman {
             if(gameState == "playing") {
 
             if(!gameFinished && !gameOver) {
-                spöke.Update(map, torsten);
+                for(int i = 0;i < spöken.Length;i++) {
+                    spöken[i].Update(map, torsten);
+                }
                 torsten.Update(map);
             }
             
 
-            if ((torsten.currentI == spöke.currentI) && (torsten.currentJ == spöke.currentJ)) {
-                if(rageMode) {
-                    spöke.ghostDied();
-                } else {
-                    gameOver = true;
+            for(int i = 0; i < spöken.Length;i++) {
+                if ((torsten.currentI == spöken[i].currentI) && (torsten.currentJ == spöken[i].currentJ)) {
+                    if (spöken[i].mode == "frightened") {
+                        spöken[i].ghostDied();
+                    } else if(spöken[i].mode == "chase" && spöken[i].mode == "scatter"){
+                        gameOver = true;
+                    }
                 }
             }
 
 
-            if(scoreCount == maxScoreCount) {
+
+                if (scoreCount == maxScoreCount) {
                 gameFinished = true;
             }     
 
@@ -135,15 +144,20 @@ namespace pacman {
 
             if(gameState == "playing") {
             map.Draw(gameTime);
-            spöke.Draw(gameTime);
+            for(int i = 0;i < spöken.Length;i++) {
+                spöken[i].Draw(gameTime);
+            }
             torsten.Draw(gameTime);
             
             sb.Begin();
             sb.DrawString(scoreFont, "Score: " + score.ToString(), new Vector2((int)Math.Round(620 * scaling), (int)Math.Round(960 * scaling)), Color.White);
-            sb.DrawString(scoreFont, spöke.mode, new Vector2(300, 50), Color.White);
-            sb.DrawString(scoreFont, spöke.stateTimer.Elapsed.ToString(), new Vector2(400, 50), Color.White);
+            sb.DrawString(scoreFont, spöken[0].mode, new Vector2(100, 20), Color.White);
+            sb.DrawString(scoreFont, spöken[0].stateTimer.Elapsed.ToString(), new Vector2(200, 20), Color.White);
+            sb.DrawString(scoreFont, spöken[1].mode, new Vector2(100, 70), Color.White);
+            sb.DrawString(scoreFont, spöken[1].stateTimer.Elapsed.ToString(), new Vector2(200, 70), Color.White);
 
-            if(gameFinished) {
+
+            if (gameFinished) {
                 sb.DrawString(scoreFont, "You won!!!", new Vector2((int)Math.Round(350 * scaling), (int)Math.Round(50 * scaling)), Color.Yellow);
             }
 
