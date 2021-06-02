@@ -21,7 +21,7 @@ namespace pacman {
         public tile tileTwo;
         public tile tileThree;
         public string mode = "scatter";
-        public string ghostVer = "pinky";
+        public string ghostVer = "blinky";
         public Stopwatch stateTimer;
         public int[] ghostStateDuration = new int[7] { 7, 20, 7, 20, 5, 20, 5 };
         public int stateCounter = 0;
@@ -40,10 +40,11 @@ namespace pacman {
             this.homePos = new Vector2(392, 490);
             stateTimer = new Stopwatch();
             stateTimer.Start();
+            Debug.WriteLine(ghostVer);
         }
 
         private void stateChange() {
-            Debug.WriteLine(mode);
+            //Debug.WriteLine(mode);
             stateTimer.Stop();
             stateTimer.Reset();
             stateCounter++;
