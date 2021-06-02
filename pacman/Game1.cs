@@ -82,8 +82,8 @@ namespace pacman {
 
             spriteMap = Content.Load<Texture2D>("spriteMap_pacman");
 
-            spöken[0] = new ghost(this, 13, 14, 2, map);
-            spöken[1] = new ghost(this, 16, 14, 2, map);
+            spöken[0] = new ghost(this, 13, 14, 2, "blinky", map);
+            spöken[1] = new ghost(this, 16, 14, 2, "pinky", map);
             //spöke = new ghost(this, 13, 14, 2, map);
             torsten = new pacman(this, 13, 26, 2, spöken, spriteMap);
 
@@ -119,7 +119,7 @@ namespace pacman {
                 if ((torsten.currentI == spöken[i].currentI) && (torsten.currentJ == spöken[i].currentJ)) {
                     if (spöken[i].mode == "frightened") {
                         spöken[i].ghostDied();
-                    } else if(spöken[i].mode == "chase" && spöken[i].mode == "scatter"){
+                    } else if(spöken[i].mode == "chase" || spöken[i].mode == "scatter") {
                         gameOver = true;
                     }
                 }

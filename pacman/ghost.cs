@@ -21,26 +21,41 @@ namespace pacman {
         public tile tileTwo;
         public tile tileThree;
         public string mode = "scatter";
-        public string ghostVer = "blinky";
+        public string ghostVer;
         public Stopwatch stateTimer;
         public int[] ghostStateDuration = new int[7] { 7, 20, 7, 20, 5, 20, 5 };
         public int stateCounter = 0;
         public tile targetTile;
         public Game game;
 
-        public ghost(Game game, int i, int j, int speed, gameMap map) : base(game) {
+        public ghost(Game game, int i, int j, int speed, string ghostVer, gameMap map) : base(game) {
             this.speed = speed;
             this.homeSpeed = 1;
             this.pos.X = i * 28 + 14;
             this.pos.Y = j * 28 + 14;
             this.dir.X = -1;
             this.dir.Y = 0;
+            this.ghostVer = ghostVer;
             this.game = game;
 
             this.homePos = new Vector2(392, 490);
             stateTimer = new Stopwatch();
             stateTimer.Start();
             Debug.WriteLine(ghostVer);
+
+            initTexture();
+        }
+
+        public void initTexture() {
+            if (ghostVer == "blinky") {
+                this.texture = Game.Content.Load<Texture2D>("spöke_1");
+            } else if (ghostVer == "inky") {
+                this.texture = Game.Content.Load<Texture2D>("inky");
+            } else if (ghostVer == "pinky") {
+                this.texture = Game.Content.Load<Texture2D>("pinky");
+            } else if (ghostVer == "clyde") {
+                this.texture = Game.Content.Load<Texture2D>("clyde");
+            }
         }
 
         private void stateChange() {
@@ -60,8 +75,9 @@ namespace pacman {
         public void ghostDied() {
             mode = "dead";
             homeAngle = Math.Atan((homePos.Y - pos.Y) / (homePos.X - pos.X));
+            initTexture();
 
-            if(homePos.X - pos.X > 0) {
+            if (homePos.X - pos.X > 0) {
                 this.dir.X = 1;
                 this.dir.Y = 1;
             } else {
@@ -148,10 +164,10 @@ namespace pacman {
 
                         if (this.mode != "frightened") {
                             pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
-                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathOne = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                             pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
@@ -173,10 +189,10 @@ namespace pacman {
 
                         if (this.mode != "frightened") {
                             pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
-                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathOne = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                             pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
@@ -198,10 +214,10 @@ namespace pacman {
 
                         if (this.mode != "frightened") {
                             pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
-                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathOne = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                             pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
@@ -225,10 +241,10 @@ namespace pacman {
 
                         if (this.mode != "frightened") {
                             pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
-                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathOne = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                             pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
@@ -250,12 +266,14 @@ namespace pacman {
 
                         if (this.mode != "frightened") {
                             pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
-                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathOne = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                             pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
+
+                        Debug.WriteLine(pathOne.ToString() + ", " + pathTwo.ToString());
 
                         if (pathOne > pathTwo) {
                             this.dir.Y = 1;
@@ -275,10 +293,10 @@ namespace pacman {
 
                         if (this.mode != "frightened") {
                             pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
-                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathOne = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                             pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
@@ -302,10 +320,10 @@ namespace pacman {
 
                         if (this.mode != "frightened") {
                             pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
-                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathOne = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                             pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
@@ -327,10 +345,10 @@ namespace pacman {
 
                         if (this.mode != "frightened") {
                             pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
-                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathOne = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                             pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
@@ -352,10 +370,10 @@ namespace pacman {
 
                         if (this.mode != "frightened") {
                             pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
-                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathOne = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                             pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
@@ -380,10 +398,10 @@ namespace pacman {
 
                         if (this.mode != "frightened") {
                             pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
-                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathOne = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                             pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
@@ -405,10 +423,10 @@ namespace pacman {
 
                         if (this.mode != "frightened") {
                             pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
-                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                         }
                         else {
-                            pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathOne = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                             pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
@@ -430,7 +448,7 @@ namespace pacman {
 
                         if (this.mode != "frightened") {
                             pathOne = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
-                            pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
+                            pathTwo = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
                         }
                         else {
                             pathOne = pyth((int)this.tileTwo.position.X - (int)targetTile.position.X, (int)this.tileTwo.position.Y - (int)targetTile.position.Y);
@@ -587,252 +605,9 @@ namespace pacman {
             }
         }
 
-        /*public void updateScatter(gameMap map, pacman torsten) {
-            var neighbour = map.tiles[currentI, currentJ].CheckNeighbours(map);
-            List<tile> nextNeighbour = map.tiles[currentI, currentJ].CheckWheyNeighbours(map);
-            Random rand = new Random();
-
-
-            if (neighbour.Count == 2) {
-                if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID != 1) {
-                    this.pos.X = this.currentI * 28 + 14;
-                    this.pos.Y = this.currentJ * 28 + 14;
-
-                    if (map.tiles[this.currentI, this.currentJ + 1].tileID == 0 && (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && this.dir.X != 0) {
-                        this.dir.X = 0;
-                        this.dir.Y = -1;
-                    }
-                    else if (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 && (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 || map.tiles[this.currentI - 1, this.currentJ].tileID == 0) && this.dir.X != 0) {
-                        this.dir.X = 0;
-                        this.dir.Y = 1;
-                    }
-                    else if (map.tiles[this.currentI + 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
-                        this.dir.X = -1;
-                        this.dir.Y = 0;
-                    }
-                    else if (map.tiles[this.currentI - 1, this.currentJ].tileID == 0 && (map.tiles[this.currentI, this.currentJ - 1].tileID == 0 || map.tiles[this.currentI, this.currentJ + 1].tileID == 0) && this.dir.Y != 0) {
-                        this.dir.X = 1;
-                        this.dir.Y = 0;
-                    }
-                }
-            }
-            else if (neighbour.Count == 1 && ((this.pos.X % 28 < 14 + Math.Ceiling((double)this.speed / 2) && this.pos.X % 28 > 14 - Math.Ceiling((double)this.speed / 2)) && (this.pos.Y % 28 < 14 + Math.Ceiling((double)this.speed / 2) && this.pos.Y % 28 > 14 - Math.Ceiling((double)speed / 2)))) {
-                if (this.dir.X == -1) {
-
-                    if (map.tiles[currentI, currentJ + 1].tileID == 0) {
-                        int scatterPath = rand.Next(2);
-                        if (scatterPath == 1) {
-                            this.dir.Y = 0;
-                            this.dir.X = -1;
-                        }
-                        else {
-                            this.dir.Y = -1;
-                            this.dir.X = 0;
-                        }
-                    }
-                    else if (map.tiles[currentI - 1, currentJ].tileID == 0) {
-                        int scatterPath = rand.Next(2);
-                        if (scatterPath == 1) {
-                            this.dir.Y = 1;
-                            this.dir.X = 0;
-                        }
-                        else {
-                            this.dir.Y = -1;
-                            this.dir.X = 0;
-                        }
-                    }
-                    else if (map.tiles[currentI, currentJ - 1].tileID == 0) {
-                        int scatterPath = rand.Next(2);
-                        if (scatterPath == 1) {
-                            this.dir.Y = 0;
-                            this.dir.X = -1;
-                        }
-                        else {
-                            this.dir.Y = 1;
-                            this.dir.X = 0;
-                        }
-                    }
-                }
-                else if (this.dir.X == 1) {
-                    if (map.tiles[currentI, currentJ + 1].tileID == 0) {
-                        int scatterPath = rand.Next(2);
-                        if (scatterPath == 1) {
-                            this.dir.Y = 0;
-                            this.dir.X = 1;
-                        }
-                        else {
-                            this.dir.Y = -1;
-                            this.dir.X = 0;
-                        }
-                    }
-                    else if (map.tiles[currentI + 1, currentJ].tileID == 0) {
-                        int scatterPath = rand.Next(2);
-                        if (scatterPath == 1) {
-                            this.dir.Y = 1;
-                            this.dir.X = 0;
-                        }
-                        else {
-                            this.dir.Y = -1;
-                            this.dir.X = 0;
-                        }
-                    }
-                    else if (map.tiles[currentI, currentJ - 1].tileID == 0) {
-                        int scatterPath = rand.Next(2);
-                        if (scatterPath == 1) {
-                            this.dir.Y = 1;
-                            this.dir.X = 0;
-                        }
-                        else {
-                            this.dir.Y = 0;
-                            this.dir.X = 1;
-                        }
-                    }
-                }
-                else if (this.dir.Y == -1) {
-                    if (map.tiles[currentI - 1, currentJ].tileID == 0) {
-                        int scatterPath = rand.Next(2);
-                        if (scatterPath == 1) {
-                            this.dir.Y = 0;
-                            this.dir.X = 1;
-                        }
-                        else {
-                            this.dir.Y = -1;
-                            this.dir.X = 0;
-                        }
-                    }
-                    else if (map.tiles[currentI + 1, currentJ].tileID == 0) {
-                        int scatterPath = rand.Next(2);
-                        if (scatterPath == 1) {
-                            this.dir.Y = 0;
-                            this.dir.X = -1;
-                        }
-                        else {
-                            this.dir.Y = -1;
-                            this.dir.X = 0;
-                        }
-                    }
-                    else if (map.tiles[currentI, currentJ - 1].tileID == 0) {
-                        int scatterPath = rand.Next(2);
-                        if (scatterPath == 1) {
-                            this.dir.Y = 0;
-                            this.dir.X = -1;
-                        }
-                        else {
-                            this.dir.Y = 0;
-                            this.dir.X = 1;
-                        }
-                    }
-
-                }
-                else if (this.dir.Y == 1) {
-                    if (map.tiles[currentI - 1, currentJ].tileID == 0) {
-                        int scatterPath = rand.Next(2);
-                        if (scatterPath == 1) {
-                            this.dir.Y = 1;
-                            this.dir.X = 0;
-                        }
-                        else {
-                            this.dir.Y = 0;
-                            this.dir.X = 1;
-                        }
-                    }
-                    else if (map.tiles[currentI + 1, currentJ].tileID == 0) {
-                        int scatterPath = rand.Next(2);
-                        if (scatterPath == 1) {
-                            this.dir.Y = 0;
-                            this.dir.X = -1;
-                        }
-                        else {
-                            this.dir.Y = 1;
-                            this.dir.X = 0;
-                        }
-                    }
-                    else if (map.tiles[currentI, currentJ + 1].tileID == 0) {
-                        int scatterPath = rand.Next(2);
-                        if (scatterPath == 1) {
-                            this.dir.Y = 0;
-                            this.dir.X = -1;
-                        }
-                        else {
-                            this.dir.Y = 0;
-                            this.dir.X = 1;
-                        }
-                    }
-                }
-
-            }
-            else if (neighbour.Count == 0 && ((this.pos.X % 28 < 14 + Math.Ceiling((double)this.speed / 2) && this.pos.X % 28 > 14 - Math.Ceiling((double)this.speed / 2)) && (this.pos.Y % 28 < 14 + Math.Ceiling((double)this.speed / 2) && this.pos.Y % 28 > 14 - Math.Ceiling((double)this.speed / 2)))) {
-                if (this.dir.X == -1) {
-                    int scatterPath = rand.Next(3);
-                    if (scatterPath == 1) {
-                        this.dir.X = 0;
-                        this.dir.Y = -1;
-                    }
-                    else if (scatterPath == 2) {
-                        this.dir.X = 0;
-                        this.dir.Y = 1;
-                    }
-                    else {
-                        this.dir.X = -1;
-                        this.dir.Y = 0;
-                    }
-
-                }
-                else if (this.dir.X == 1) {
-                    int scatterPath = rand.Next(3);
-                    if (scatterPath == 1) {
-                        this.dir.X = 0;
-                        this.dir.Y = -1;
-                    }
-                    else if (scatterPath == 2) {
-                        this.dir.X = 1;
-                        this.dir.Y = 0;
-                    }
-                    else {
-                        this.dir.X = 0;
-                        this.dir.Y = 1;
-                    }
-                }
-                else if (this.dir.Y == -1) {
-                    int scatterPath = rand.Next(3);
-                    if (scatterPath == 1) {
-                        this.dir.X = 1;
-                        this.dir.Y = 0;
-                    }
-                    else if (scatterPath == 2) {
-                        this.dir.X = 0;
-                        this.dir.Y = -1;
-                    }
-                    else {
-                        this.dir.X = -1;
-                        this.dir.Y = 0;
-                    }
-                }
-                else if (this.dir.Y == 1) {
-                    int scatterPath = rand.Next(3);
-                    if (scatterPath == 1) {
-                        this.dir.X = 1;
-                        this.dir.Y = 0;
-                    }
-                    else if (scatterPath == 2) {
-                        this.dir.X = 0;
-                        this.dir.Y = 1;
-                    }
-                    else {
-                        this.dir.X = -1;
-                        this.dir.Y = 0;
-                    }
-
-                }
-            }
-
-
-        }*/
-
         public void Update(gameMap map, pacman torsten) {
 
             if(stateCounter < ghostStateDuration.Length && stateTimer.ElapsedMilliseconds >= ghostStateDuration[stateCounter] * 1000 && mode != "dead" && mode != "reviving") {
-                Debug.WriteLine("test2");
                 stateChange();
             } else if(stateTimer.IsRunning && stateCounter >= ghostStateDuration.Length) {
                 stateTimer.Stop();
@@ -853,7 +628,7 @@ namespace pacman {
 
 
                 updateDir(map, torsten);
-
+                //Debug.WriteLine(targetTile.position.X + ", " + targetTile.position.Y);
                 if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
                     || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
                     this.pos.X += this.dir.X * this.speed;
@@ -861,7 +636,7 @@ namespace pacman {
                 }
             }
             else if (mode == "scatter") {
-
+                
                 this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
                 this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
 
@@ -874,8 +649,10 @@ namespace pacman {
                     this.pos.X = currentI * 28;
                 }
 
+                updateDir(map, torsten);
 
                 //updateScatter(map, torsten);
+                //Debug.WriteLine(targetTile.position.X + ", " + targetTile.position.Y);
                 if (map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 1
                 || map.tiles[(int)((this.pos.X + (this.dir.X * 14)) / 28), (int)((this.pos.Y + this.dir.Y * 14) / 28)].tileID == 2) {
                     this.pos.X += this.dir.X * this.speed;
@@ -917,7 +694,7 @@ namespace pacman {
 
         public void Draw(GameTime gt) {
             SpriteBatch sb = new SpriteBatch(GraphicsDevice);
-            this.texture = Game.Content.Load<Texture2D>("spöke_1");
+            
 
             sb.Begin();
             sb.Draw(this.texture, new Rectangle((int)Math.Round((this.pos.X - this.width / 2) * Game1.scaling), (int)Math.Round((this.pos.Y - this.width / 2) * Game1.scaling), (int)Math.Round(this.width * Game1.scaling), (int)Math.Round(this.width * Game1.scaling)), Color.White);

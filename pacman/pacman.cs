@@ -72,11 +72,13 @@ namespace pacman {
                     Game1.rageMode = false;
                     spöken[i].mode = "scatter";
                     this.spöken[i].speed = 2;
+                    this.spöken[i].initTexture();
                     this.spöken[i].stateTimer.Start();
                 } else if (spöken[i].mode != "dead" && spöken[i].mode != "reviving") {
                     Game1.rageMode = false;
                     spöken[i].mode = "chase";
                     this.spöken[i].speed = 2;
+                    this.spöken[i].initTexture();
                     this.spöken[i].stateTimer.Start();
                 }
             }
@@ -107,6 +109,7 @@ namespace pacman {
                     if (spöken[i].mode != "dead" && spöken[i].mode != "reviving") {
                         Game1.rageMode = true;
                         this.spöken[i].mode = "frightened";
+                        this.spöken[i].texture = Game.Content.Load<Texture2D>("fearghost");
                         this.spöken[i].speed = 1;
                         this.spöken[i].stateTimer.Stop();
                     }
