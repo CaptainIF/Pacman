@@ -20,30 +20,36 @@ namespace pacman {
         public tile tileOne;
         public tile tileTwo;
         public tile tileThree;
-        public string mode = "scatter";
+        public string mode = "dead";
         public string ghostVer;
         public Stopwatch stateTimer;
         public int[] ghostStateDuration = new int[7] { 7, 20, 7, 20, 5, 20, 5 };
         public int stateCounter = 0;
         public tile targetTile;
         public Game game;
+        public bool started = false;
 
         public ghost(Game game, int i, int j, int speed, string ghostVer, gameMap map) : base(game) {
             this.speed = speed;
             this.homeSpeed = 1;
-            this.pos.X = i * 28 + 14;
-            this.pos.Y = j * 28 + 14;
-            this.dir.X = -1;
+            this.pos.X = i * 28;
+            this.pos.Y = j * 28;
+            this.dir.X = 0;
             this.dir.Y = 0;
             this.ghostVer = ghostVer;
             this.game = game;
 
             this.homePos = new Vector2(392, 490);
             stateTimer = new Stopwatch();
-            stateTimer.Start();
-            Debug.WriteLine(ghostVer);
 
             initTexture();
+        }
+
+        public void start() {
+            if(!started) {
+                this.mode = "reviving";
+                this.started = true;
+            }
         }
 
         public void initTexture() {
@@ -90,33 +96,24 @@ namespace pacman {
             var neighbour = map.tiles[currentI, currentJ].CheckNeighbours(map);
             List<tile> nextNeighbour = map.tiles[currentI, currentJ].CheckWheyNeighbours(map);
 
-            if(ghostVer == "blinky") {
-                targetTile = new tile(game, torsten.currentI, torsten.currentJ, 1, texture);
-            } else if(ghostVer == "inky") {
-                
-            } else if(ghostVer == "pinky") {
-                if(torsten.dir.X == 1) {
-                    targetTile = new tile(game, torsten.currentI + 4, torsten.currentJ, 1, texture);
-                } else if(torsten.dir.X == -1) {
-                    targetTile = new tile(game, torsten.currentI - 4, torsten.currentJ, 1, texture);
-                } else if(torsten.dir.Y == 1) {
-                    targetTile = new tile(game, torsten.currentI, torsten.currentJ + 4, 1, texture);
-                } else if(torsten.dir.Y == -1) {
-                    targetTile = new tile(game, torsten.currentI, torsten.currentJ - 4, 1, texture);
-                }
-            } else if(ghostVer == "clyde") {
-                double pacDist = pyth((int)this.tileOne.position.X - (int)torsten.currentI, (int)this.tileOne.position.Y - (int)torsten.currentJ);
-
-                if(pacDist >= 6) {
+            if(mode == "chase") {
+                if (ghostVer == "blinky") {
                     targetTile = new tile(game, torsten.currentI, torsten.currentJ, 1, texture);
-                } else {
-                    targetTile = new tile(game, 1, 30, 1, texture);
+                } else if (ghostVer == "inky") {
+                    tile tempTile = new tile(game, (int)(torsten.currentI + 2 * this.dir.X), (int)(torsten.currentI + 2 * this.dir.Y), 1, texture);
+                    targetTile = new tile(game, (int)(tempTile.position.X + (tempTile.position.X - Game1.getBlinky().X)), (int)(tempTile.position.Y + (tempTile.position.Y - Game1.getBlinky().Y)), 1, texture);
+                } else if (ghostVer == "pinky") {
+                    targetTile = new tile(game, (int)(torsten.currentI + 4 * this.dir.X), (int)(torsten.currentI + 4 * this.dir.Y), 1, texture);
+                } else if (ghostVer == "clyde") {
+                    double pacDist = pyth((int)this.currentI - (int)torsten.currentI, (int)this.currentJ - (int)torsten.currentJ);
+
+                    if (pacDist >= 6) {
+                        targetTile = new tile(game, torsten.currentI, torsten.currentJ, 1, texture);
+                    } else {
+                        targetTile = new tile(game, 1, 30, 1, texture);
+                    }
                 }
-            }
-
-
-
-            if(mode == "scatter") {
+            } else if(mode == "scatter") {
                 if(ghostVer == "blinky") {
                     targetTile = new tile(game, 26, 1, 1, texture);
                 } else if(ghostVer == "inky") {
@@ -126,6 +123,8 @@ namespace pacman {
                 } else if(ghostVer == "clyde") {
                     targetTile = new tile(game, 1, 30, 1, texture);
                 }
+            } else if(mode == "frightened") {
+                targetTile = new tile(game, torsten.currentI, torsten.currentJ, 1, texture);
             }
 
 
@@ -153,7 +152,7 @@ namespace pacman {
                     }
                 }
             }
-            else if (neighbour.Count == 1 && ((this.pos.X % 28 < 14 + Math.Ceiling((double)this.speed / 2) && this.pos.X % 28 > 14 - Math.Ceiling((double)this.speed / 2)) && (this.pos.Y % 28 < 14 + Math.Ceiling((double)this.speed / 2) && this.pos.Y % 28 > 14 - Math.Ceiling((double)speed / 2)))) {
+            else if (neighbour.Count == 1 && ((this.pos.X % 28 < 14 + Math.Ceiling((double)this.speed ) && this.pos.X % 28 > 14 - Math.Ceiling((double)this.speed)) && (this.pos.Y % 28 < 14 + Math.Ceiling((double)this.speed) && this.pos.Y % 28 > 14 - Math.Ceiling((double)speed)))) {
                 if (this.dir.X == -1) {
                     if (map.tiles[currentI, currentJ + 1].tileID == 0) {
                         this.tileOne = nextNeighbour[0];
@@ -273,7 +272,7 @@ namespace pacman {
                             pathTwo = pyth((int)this.tileOne.position.X - (int)targetTile.position.X, (int)this.tileOne.position.Y - (int)targetTile.position.Y);
                         }
 
-                        Debug.WriteLine(pathOne.ToString() + ", " + pathTwo.ToString());
+                        //Debug.WriteLine(pathOne.ToString() + ", " + pathTwo.ToString());
 
                         if (pathOne > pathTwo) {
                             this.dir.Y = 1;
@@ -677,7 +676,11 @@ namespace pacman {
                 this.currentI = (int)((this.pos.X) / map.tiles[0, 0].size);
                 this.currentJ = (int)((this.pos.Y) / map.tiles[0, 0].size);
                 if(map.tiles[this.currentI, this.currentJ].tileID == 1 && this.pos.Y % 28 < 14 + Math.Ceiling((double)this.speed / 2) && this.pos.Y % 28 > 14 - Math.Ceiling((double)this.speed / 2)) {
-                    this.mode = "chase";
+                    if (stateCounter % 2 == 0) {
+                        mode = "scatter";
+                    } else {
+                        mode = "chase";
+                    }
                     this.dir.X = -1;
                     this.dir.Y = 0;
                     this.speed = 2;

@@ -25,7 +25,7 @@ namespace pacman {
         public SoundEffect chomp;
         public SoundEffectInstance chompInstance;
         public ghost[] spöken;
-        public Timer rageTimer;
+        public Timer rageTimer = new Timer();
 
         public pacman(Game game, int i, int j, int speed, ghost[] spöken, Texture2D spriteMap) : base(game) {
             this.pos.X = i * 28 + 28 / 2;
@@ -38,6 +38,7 @@ namespace pacman {
             chomp = Game.Content.Load<SoundEffect>("chomp");
             chompInstance = chomp.CreateInstance();
             chompInstance.Volume = 0.1f;
+            rageTimer.Interval = 8000;
         }
 
         public void init() {
@@ -102,12 +103,17 @@ namespace pacman {
                 map.tiles[currentI, currentJ].Init();
                 Game1.score += 10;
                 Game1.scoreCount++;
+                if(Game1.maxScoreCount / 3 < Game1.scoreCount) {
+                    spöken[3].start();
+                }
+                if(Game1.scoreCount >= 30) {
+                    spöken[2].start();
+                }
             } else if(map.tiles[currentI, currentJ].metadata == 3) {
                 map.tiles[currentI, currentJ].metadata = 0;
                 map.tiles[currentI, currentJ].Init();
                 for (int i = 0; i < spöken.Length; i++) {
                     if (spöken[i].mode != "dead" && spöken[i].mode != "reviving") {
-                        Game1.rageMode = true;
                         this.spöken[i].mode = "frightened";
                         this.spöken[i].texture = Game.Content.Load<Texture2D>("fearghost");
                         this.spöken[i].speed = 1;
@@ -115,8 +121,7 @@ namespace pacman {
                     }
                 }
                 Game1.score += 50;
-                rageTimer = new Timer();
-                rageTimer.Interval = 8000;
+                rageTimer.Stop();
                 rageTimer.Elapsed += OnTimedEvent;
                 rageTimer.Start();
             }

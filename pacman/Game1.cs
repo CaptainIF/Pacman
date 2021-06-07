@@ -17,7 +17,7 @@ namespace pacman {
         static double height = originalHeight;
         static double proportions = height / width;
         pacman torsten;
-        ghost[] spöken = new ghost[2];
+        static ghost[] spöken = new ghost[4];
         Song pacsong;
         SpriteFont scoreFont;
         SpriteFont menuFont;
@@ -46,6 +46,10 @@ namespace pacman {
             for(int i = 0;i < spöken.Length;i++) {
                 spöken[i].mode = "frightened";
             }
+        }
+
+        public static Vector2 getBlinky() {
+            return new Vector2(spöken[0].currentI, spöken[0].currentJ);
         }
 
         public void OnResize(Object sender, EventArgs e) {
@@ -82,8 +86,14 @@ namespace pacman {
 
             spriteMap = Content.Load<Texture2D>("spriteMap_pacman");
 
-            spöken[0] = new ghost(this, 13, 14, 2, "blinky", map);
-            spöken[1] = new ghost(this, 16, 14, 2, "pinky", map);
+            spöken[0] = new ghost(this, 13, 16, 2, "blinky", map);
+            spöken[1] = new ghost(this, 15, 16, 2, "pinky", map);
+            spöken[2] = new ghost(this, 13, 18, 2, "inky", map);
+            spöken[3] = new ghost(this, 15, 18, 2, "clyde", map);
+
+            spöken[0].start();
+            spöken[1].start();
+
             //spöke = new ghost(this, 13, 14, 2, map);
             torsten = new pacman(this, 13, 26, 2, spöken, spriteMap);
 
@@ -151,10 +161,10 @@ namespace pacman {
             
             sb.Begin();
             sb.DrawString(scoreFont, "Score: " + score.ToString(), new Vector2((int)Math.Round(620 * scaling), (int)Math.Round(960 * scaling)), Color.White);
-            sb.DrawString(scoreFont, spöken[0].mode, new Vector2(100, 20), Color.White);
-            sb.DrawString(scoreFont, spöken[0].stateTimer.Elapsed.ToString(), new Vector2(200, 20), Color.White);
-            sb.DrawString(scoreFont, spöken[1].mode, new Vector2(100, 70), Color.White);
-            sb.DrawString(scoreFont, spöken[1].stateTimer.Elapsed.ToString(), new Vector2(200, 70), Color.White);
+            //sb.DrawString(scoreFont, spöken[0].mode, new Vector2(100, 20), Color.White);
+            //sb.DrawString(scoreFont, spöken[0].stateTimer.Elapsed.ToString(), new Vector2(200, 20), Color.White);
+            //sb.DrawString(scoreFont, spöken[2].mode, new Vector2(100, 70), Color.White);
+            //sb.DrawString(scoreFont, spöken[2].stateTimer.Elapsed.ToString(), new Vector2(200, 70), Color.White);
 
 
             if (gameFinished) {
