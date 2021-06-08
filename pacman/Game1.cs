@@ -20,9 +20,10 @@ namespace pacman {
         static ghost[] spöken = new ghost[4];
         Song pacsong;
         SpriteFont scoreFont;
-        SpriteFont menuFont;
+        public static SpriteFont menuFont;
         Texture2D spriteMap;
         public string gameState = "playing";
+        public button startbutton;
 
         public static int score = 0;
         public static int scoreCount = 0;
@@ -85,6 +86,8 @@ namespace pacman {
             _graphics.ApplyChanges();
 
             spriteMap = Content.Load<Texture2D>("spriteMap_pacman");
+
+            //startbutton = new button(this, 310, 150, 200, 100);
 
             spöken[0] = new ghost(this, 13, 16, 2, "blinky", map);
             spöken[1] = new ghost(this, 15, 16, 2, "pinky", map);
@@ -184,7 +187,8 @@ namespace pacman {
             } else if(gameState == "menu") {
                 sb.Begin();
                 sb.DrawString(menuFont, "PACMAN", new Vector2(340, 50), Color.Yellow);
-                sb.DrawString(menuFont, "START GAME", new Vector2(310, 150), Color.Red);
+                //sb.DrawString(menuFont, "START GAME", new Vector2(310, 150), Color.Red);
+                startbutton.Draw(gameTime);
                 sb.End();
                 base.Draw(gameTime);
             }
